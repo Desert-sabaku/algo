@@ -1,0 +1,7 @@
+[project]
+name = "algo"
+version = "0.1.0"
+description = "algorithms and data structures practice"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = []
