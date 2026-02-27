@@ -1,4 +1,7 @@
 area = int(input("Enter the area of the square: "))
+if area <= 0:
+    raise ValueError("Area must be a positive integer.")
+
 
 for i in range(1, area + 1):
     if i * i > area:
