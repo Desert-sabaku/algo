@@ -27,10 +27,6 @@ def sieve(limit: int) -> list[bool]:
 
 
 if __name__ == "__main__":
-
-    def task(limit: int) -> list[bool]:
-        return sieve(limit)
-
     LIMIT = 10000000
-    cProfile.run("task(LIMIT)")
+    cProfile.run("sieve(LIMIT)")
     # print([i for i, e in enumerate(task(LIMIT)) if e])
