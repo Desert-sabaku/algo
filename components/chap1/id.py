@@ -6,7 +6,7 @@ def put_id():
     print(f"{id(x) = }")
 
 
-print(f"{id("hello") = }")
+print(f"{id('hello') = }")
 print(f"{id(n) = }")
 put_id()
 
