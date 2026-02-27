@@ -53,9 +53,9 @@ def prime3(maximum: int) -> tuple[list[int], int]:
 
 
 if __name__ == "__main__":
-    limit = 1000
-    print(*prime1(limit), *prime2(limit), *prime3(limit), sep="\n")
+    LIMIT = 1000
+    cProfile.run("prime1(LIMIT)")
+    cProfile.run("prime2(LIMIT)")
+    cProfile.run("prime3(LIMIT)")
 
-    cProfile.run("prime1(limit)")
-    cProfile.run("prime2(limit)")
-    cProfile.run("prime3(limit)")
+    # print(*prime1(LIMIT), *prime2(LIMIT), *prime3(LIMIT), sep="\n")
