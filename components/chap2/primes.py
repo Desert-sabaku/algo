@@ -2,13 +2,13 @@ import cProfile
 
 
 def sieve(limit: int) -> list[bool]:
-    """Returns a list of natural numbers up to the specified number, having filtered out composite numbers.
+    """Returns a boolean sieve marking prime indices up to but not including limit.
 
     Args:
-        limit (int): the specified number
+        limit (int): The exclusive upper bound for the sieve.
 
     Returns:
-        list[bool]: List of the prime numbers
+        list[bool]: A list where index i is True if i is prime, False otherwise.
     """
     primes = [True] * limit
     if limit > 0:
