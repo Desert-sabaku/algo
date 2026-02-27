@@ -7,7 +7,7 @@ def prime1(maximum: int) -> tuple[list[int], int]:
 
     for candidate in range(5, maximum, 2):
         is_prime = True
-        for divisor in primes[2:]:
+        for divisor in primes[1:]:
             if divisor * divisor > candidate:
                 break
             counter += 2
