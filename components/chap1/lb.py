@@ -1,5 +1,7 @@
 ASTERISK_COUNT = int(input("Total number of asterisks: "))
 WORDS = int(input("Number of asterisks per line: "))
+if WORDS <= 0:
+    raise ValueError("Number of asterisks per line must be greater than 0.")
 
 for i in range(ASTERISK_COUNT):
     print("*", end="")
