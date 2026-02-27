@@ -1,4 +1,8 @@
+"""Code testing"""
+
+
 def main():
+    """entry point"""
     print("Hello from algo!")
 
 
