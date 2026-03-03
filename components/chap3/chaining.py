@@ -2,7 +2,13 @@
 
 from __future__ import annotations
 
-from typing import Hashable, TypeVar
+from collections.abc import Hashable
+from typing import TypeVar
+
+# もともと`typing`には型ヒント用の別名が多くあった
+# その後Python本体で`collections.abc`側の型がそのまま注釈できるようになり、重複。
+# 実態のある抽象基底クラスは`abc`モジュールに依存させるように
+# `typing.Hashable`は現行では非推奨扱い
 
 # Hashableはハッシュ値を持てる型。
 # 基本的に、同じオブジェクトなら同じハッシュ値を持ち、等価性を持つ。
