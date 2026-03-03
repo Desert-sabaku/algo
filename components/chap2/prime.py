@@ -1,7 +1,9 @@
+"""Three prime-finding algorithms with performance profiling."""
 import cProfile
 
 
 def prime1(maximum: int) -> tuple[list[int], int]:
+    """Find primes up to maximum using an optimised trial division (odd candidates only)."""
     counter = 0
     primes = [2, 3]
 
@@ -23,6 +25,7 @@ def prime1(maximum: int) -> tuple[list[int], int]:
 
 
 def prime2(maximum: int) -> tuple[list[int], int]:
+    """Find primes up to maximum using trial division against previously found primes."""
     primes = [2]
     counter = 0
 
@@ -38,6 +41,7 @@ def prime2(maximum: int) -> tuple[list[int], int]:
 
 
 def prime3(maximum: int) -> tuple[list[int], int]:
+    """Find primes up to maximum using naive trial division against all smaller numbers."""
     primes: list[int] = []
     counter = 0
 

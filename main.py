@@ -1,7 +1,7 @@
 """Code testing"""
 
 
-def main():
+def main() -> None:
     """entry point"""
     print("Hello from algo!")
 

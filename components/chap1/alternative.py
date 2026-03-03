@@ -1,3 +1,4 @@
+"""Demonstrates alternating character display patterns."""
 print("Alternate display")
 
 N = int(input("N: "))

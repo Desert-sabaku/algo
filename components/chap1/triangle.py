@@ -1,3 +1,4 @@
+"""Prints triangle patterns using asterisks."""
 print("Triangle")
 N = int(input("Short side length: "))
 

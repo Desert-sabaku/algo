@@ -1,3 +1,4 @@
+"""Prints cumulative sum from a to b with formatted output."""
 print("sum from a to b")
 a = int(input("integer: "))
 b = int(input("integer: "))

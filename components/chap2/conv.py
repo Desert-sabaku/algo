@@ -1,7 +1,9 @@
+"""Converts integers to their string representation in an arbitrary base."""
 BASE_DIGITS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
 def convert_base(num: int, radix: int) -> str:
+    """Return the string representation of num in the given radix."""
     if radix < 2 or radix > len(BASE_DIGITS):
         raise ValueError(f"radix must be between 2 and {len(BASE_DIGITS)}")
     if num == 0:
@@ -17,6 +19,6 @@ def convert_base(num: int, radix: int) -> str:
 
 
 if __name__ == "__main__":
-    num = int(input())
-    radix = int(input())
-    print(convert_base(num, radix))
+    _num = int(input())
+    _radix = int(input())
+    print(convert_base(_num, _radix))
