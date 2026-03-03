@@ -1,4 +1,5 @@
 """Prints cumulative sum from 3 to 55 with two equivalent approaches."""
+
 A, B = 3, 55
 
 total = 0

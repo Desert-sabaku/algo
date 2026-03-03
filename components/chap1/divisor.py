@@ -1,4 +1,5 @@
 """Finds all divisor pairs of a given area."""
+
 area = int(input("Enter the area of the square: "))
 if area <= 0:
     raise ValueError("Area must be a positive integer.")

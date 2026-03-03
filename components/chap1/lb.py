@@ -1,4 +1,5 @@
 """Demonstrates asterisk display patterns."""
+
 ASTERISK_COUNT = int(input("Total number of asterisks: "))
 WORDS = int(input("Number of asterisks per line: "))
 if WORDS <= 0:

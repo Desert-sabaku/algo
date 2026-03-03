@@ -1,4 +1,5 @@
 """Converts integers to their string representation in an arbitrary base."""
+
 BASE_DIGITS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
