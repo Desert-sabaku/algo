@@ -1,10 +1,12 @@
+"""Prints triangle patterns using asterisks."""
+
 print("Triangle")
 N = int(input("Short side length: "))
 
 for i in range(1, N + 1):
     print("*" * i)
 
-print() # 改行用
+print()  # 改行用
 
 for i in range(1, N + 1):
     print(" " * (N - i), end="")
