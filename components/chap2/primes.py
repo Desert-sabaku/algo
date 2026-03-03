@@ -1,3 +1,5 @@
+"""Prime sieve (Sieve of Eratosthenes) implementation with profiling."""
+
 import cProfile
 
 
