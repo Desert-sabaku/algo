@@ -27,6 +27,7 @@ This repository is a Python practice project for algorithms and data structures.
 components/
   chap1/   # Chapter 1 algorithms
   chap2/   # Chapter 2 algorithms
+  chap3/
 main.py    # Entry point
 ```
 
