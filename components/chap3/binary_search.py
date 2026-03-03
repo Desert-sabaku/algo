@@ -1,3 +1,5 @@
+"""Binary search implementation with profiling."""
+
 import cProfile
 import random
 from typing import Protocol, Self, Sequence, TypeVar
@@ -7,14 +9,18 @@ from typing import Protocol, Self, Sequence, TypeVar
 # インターフェースは「何ができるか」の契約みたいなもの。
 # どんなメソッドや属性を持つか。中身は問わない。約束だけ。
 # Pythonには、`ABC`という別のインターフェース定義用の仕組みがある。
-class SupportsLT(Protocol):
+class SupportsLT(Protocol):  # pylint: disable=too-few-public-methods
+    """Protocol for values that can be ordered with the less-than operator."""
+
     # 関数名`__lt__`: `<`演算子に対応する特殊メソッド
     # 第一引数`self`: 比較される左辺オブジェクト
     # 第二引数`other`: 右辺は「自分と同じ型で比較可能」を要求する
     # 第三引数`/`: ここより前は位置引数専用である（キーワード引数扱いされるとまずい）
     # 返り値： bool。
     # 定義部：`Protocol`なので形だけ。
-    def __lt__(self, other: Self, /) -> bool: ...
+    def __lt__(self, other: Self, /) -> bool:
+        """Return whether self is strictly less than another value."""
+        raise NotImplementedError
 
     # 重要：ここでは「大なりがあるか」を問い、その中身は気にしていない。
     # 実装ではなく、契約に依存している。こういうのを疎結合という。
@@ -33,6 +39,7 @@ T = TypeVar("T", bound=SupportsLT)
 
 
 def binary_search(seq: Sequence[T], key: T) -> int | None:
+    """Return the index of key in a sorted sequence using binary search."""
     left, right = 0, len(seq) - 1
     while left <= right:
         mid = (left + right) // 2

@@ -1,3 +1,5 @@
+"""Linear search (sentinel) with profiling."""
+
 import cProfile
 from typing import Sequence, TypeVar
 
@@ -14,6 +16,7 @@ T = TypeVar("T")
 
 
 def index_of(seq: Sequence[T], key: T) -> int | None:
+    """Return the index of key in seq by using a sentinel linear search."""
     # `Sequence`は`list`や`tuple`や`str`が含まれている。引数`seq`はどの型でも許容できる。これが共変性である。高校数学の必要条件の感覚に近い。
 
     seq = list(seq)
@@ -27,6 +30,7 @@ def index_of(seq: Sequence[T], key: T) -> int | None:
 
 
 def index_of2[U](seq: Sequence[U], key: U) -> int | None:
+    """Return the index of key in seq by using a generic sentinel search."""
     # 型の上限やらを指定しないなら、こんな感じの省略記法がある。
 
     seq = list(seq)
@@ -40,8 +44,8 @@ def index_of2[U](seq: Sequence[U], key: U) -> int | None:
 
 
 if __name__ == "__main__":
-    name = "Hello, World!"
-    cProfile.run("index_of2(name, 'o')")
-    print(f"{len(name) = }")
-    print(f"{index_of2(name, 'i') = }")
-    print(f"{name = }")
+    SAMPLE_TEXT = "Hello, World!"
+    cProfile.run("index_of2(SAMPLE_TEXT, 'o')")
+    print(f"{len(SAMPLE_TEXT) = }")
+    print(f"{index_of2(SAMPLE_TEXT, 'i') = }")
+    print(f"{SAMPLE_TEXT = }")

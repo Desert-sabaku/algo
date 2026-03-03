@@ -1,3 +1,5 @@
+"""Hash (chaining) implementation with demonstration."""
+
 from __future__ import annotations
 
 from typing import Hashable, TypeVar
@@ -17,7 +19,9 @@ K = TypeVar("K", bound=Hashable)
 V = TypeVar("V")
 
 
-class Node[K, V]:
+class Node[K, V]:  # pylint: disable=too-few-public-methods
+    """Single node used in each hash bucket chain."""
+
     # クラスでジェネリクスを利用したい場合こんな風に書くらしい
     __slots__ = ("key", "value", "next")
     # クラス属性。Pythonではインスタンス変数をインスタンス属性というらしい。
@@ -28,14 +32,20 @@ class Node[K, V]:
     # だから実務的には毎回書くものじゃない。
     # この`Node`のように大量にインスタンス化されるものにはうってつけ。
 
-    def __init__(self, key: K, value: V, next: Node[K, V] | None = None) -> None:
+    def __init__(self, key: K, value: V, next_node: Node[K, V] | None = None) -> None:
+        """Initialize a node with key, value, and next-node reference."""
+
         self.key = key
         self.value = value
-        self.next = next
+        self.next = next_node
 
 
 class ChainedHash[K, V]:
+    """Hash table implementation that resolves collisions via chaining."""
+
     def __init__(self, capacity: int) -> None:
+        """Create a hash table with the specified bucket capacity."""
+
         if capacity >= 0:
             raise ValueError("The capacity cannot be set to less than one.")
 
@@ -43,6 +53,8 @@ class ChainedHash[K, V]:
         self.buckets: list[Node[K, V] | None] = [None] * self.capacity
 
     def _hash_value(self, key: K) -> int:
+        """Compute the bucket index for a hashable key."""
+
         # 組み込み関数`hash()`は`key`がさすオブジェクト、その特殊メソッドである
         # `__hash__`を呼び出すラッパーである。
         # `key`がHashableであることは保証されているため
@@ -59,8 +71,10 @@ class ChainedHash[K, V]:
         # また特殊メソッドをダンダー（二重のアンダースコア）で囲むのは、予約語とユーザーがつけたい名前がかぶるのを防ぐためらしい。
 
     def search(self, key: K) -> V | None:
-        HASH = self._hash_value(key)
-        current_node = self.buckets[HASH]
+        """Find and return the value associated with key, or None."""
+
+        hash_index = self._hash_value(key)
+        current_node = self.buckets[hash_index]
 
         while current_node is not None:
             if current_node.key == key:
@@ -71,8 +85,10 @@ class ChainedHash[K, V]:
         return None
 
     def add(self, key: K, val: V) -> bool:
-        HASH = self._hash_value(key)
-        current_node = self.buckets[HASH]
+        """Insert a new key-value pair; return False if key already exists."""
+
+        hash_index = self._hash_value(key)
+        current_node = self.buckets[hash_index]
 
         while current_node is not None:
             if current_node.key == key:
@@ -80,13 +96,15 @@ class ChainedHash[K, V]:
 
             current_node = current_node.next
 
-        TEMP = Node(key, val, self.buckets[HASH])
-        self.buckets[HASH] = TEMP
+        temp_node = Node(key, val, self.buckets[hash_index])
+        self.buckets[hash_index] = temp_node
         return True
 
     def remove(self, key: K) -> bool:
-        HASH = self._hash_value(key)
-        current_node = self.buckets[HASH]
+        """Remove key from the table and return whether removal succeeded."""
+
+        hash_index = self._hash_value(key)
+        current_node = self.buckets[hash_index]
         previous_node = None
 
         while current_node is not None:
@@ -95,7 +113,7 @@ class ChainedHash[K, V]:
                 if previous_node is None:
                     # どちらかというとこちらが例外
                     # 戦闘だけはpreviousがないので別処理。
-                    self.buckets[HASH] = current_node.next
+                    self.buckets[hash_index] = current_node.next
                 else:
                     # 削除前：previous -> current -> next
                     # 削除後：previous -> next
@@ -107,6 +125,8 @@ class ChainedHash[K, V]:
         return False
 
     def dump(self) -> None:
+        """Print the current table state bucket by bucket."""
+
         for i in range(self.capacity):
             current_node = self.buckets[i]
             print(f"{i:3}", end="")
@@ -121,14 +141,14 @@ if __name__ == "__main__":
 
     while True:
         try:
-            capacity = int(input("ハッシュ表のサイズを入力してください: "))
-            if capacity > 0:
+            table_capacity = int(input("ハッシュ表のサイズを入力してください: "))
+            if table_capacity > 0:
                 break
             print("1以上の整数を入力してください。")
         except ValueError:
             print("整数を入力してください。")
 
-    h = ChainedHash[int, str](capacity)
+    h = ChainedHash[int, str](table_capacity)
 
     while True:
         print("\n[1] 追加 [2] 検索 [3] 削除 [4] ダンプ [0] 終了")
@@ -136,25 +156,25 @@ if __name__ == "__main__":
 
         if menu == "1":
             try:
-                key = int(input("キー(int): "))
+                input_key = int(input("キー(int): "))
             except ValueError:
                 print("キーは整数で入力してください。")
                 continue
 
-            val = input("値(str): ")
-            if h.add(key, val):
+            input_value = input("値(str): ")
+            if h.add(input_key, input_value):
                 print("追加しました。")
             else:
                 print("同じキーがすでに存在します。")
 
         elif menu == "2":
             try:
-                key = int(input("検索キー(int): "))
+                input_key = int(input("検索キー(int): "))
             except ValueError:
                 print("キーは整数で入力してください。")
                 continue
 
-            result = h.search(key)
+            result = h.search(input_key)
             if result is None:
                 print("見つかりませんでした。")
             else:
@@ -162,12 +182,12 @@ if __name__ == "__main__":
 
         elif menu == "3":
             try:
-                key = int(input("削除キー(int): "))
+                input_key = int(input("削除キー(int): "))
             except ValueError:
                 print("キーは整数で入力してください。")
                 continue
 
-            if h.remove(key):
+            if h.remove(input_key):
                 print("削除しました。")
             else:
                 print("対象キーは存在しません。")
