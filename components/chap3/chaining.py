@@ -88,7 +88,7 @@ class ChainedHash[K, V]:
     def __init__(self, capacity: int) -> None:
         """Create a hash table with the specified bucket capacity."""
 
-        if capacity >= 0:
+        if capacity <= 0:
             raise ValueError("The capacity cannot be set to less than one.")
 
         self.capacity = capacity

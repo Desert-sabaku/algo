@@ -19,28 +19,30 @@ def index_of(seq: Sequence[T], key: T) -> int | None:
     """Return the index of key in seq by using a sentinel linear search."""
     # `Sequence`は`list`や`tuple`や`str`が含まれている。引数`seq`はどの型でも許容できる。これが共変性である。高校数学の必要条件の感覚に近い。
 
-    seq = list(seq)
-    seq.append(key)
+    seq_list = list(seq)
+    original_length = len(seq_list)
+    seq_list.append(key)
     index = 0
-    for index, e in enumerate(seq):
+    for index, e in enumerate(seq_list):
         if e == key:
             break
 
-    return index if index == len(seq) else None
+    return index if index < original_length else None
 
 
 def index_of2[U](seq: Sequence[U], key: U) -> int | None:
     """Return the index of key in seq by using a generic sentinel search."""
     # 型の上限やらを指定しないなら、こんな感じの省略記法がある。
 
-    seq = list(seq)
-    seq.append(key)
+    seq_list = list(seq)
+    original_length = len(seq_list)
+    seq_list.append(key)
     index = 0
-    for index, e in enumerate(seq):
+    for index, e in enumerate(seq_list):
         if e == key:
             break
 
-    return index if index == len(seq) else None
+    return index if index < original_length else None
 
 
 if __name__ == "__main__":

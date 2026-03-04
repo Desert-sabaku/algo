@@ -69,8 +69,11 @@ class OpenHash[KEY, VALUE]:
     def __init__(self, capacity: int) -> None:
         """Create an empty hash table with the given fixed capacity."""
 
+        if capacity <= 0:
+            raise ValueError("Capacity must be at least 1.")
+
         self._capacity = capacity
-        self._buckets = [Bucket[KEY, VALUE]()] * capacity
+        self._buckets = [Bucket[KEY, VALUE]() for _ in range(capacity)]
 
     @property
     def capacity(self) -> int:
