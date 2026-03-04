@@ -8,7 +8,7 @@ from typing import Protocol, Self, Sequence, TypeVar
 # `Protocol`はインターフェース定義
 # インターフェースは「何ができるか」の契約みたいなもの。
 # どんなメソッドや属性を持つか。中身は問わない。約束だけ。
-# Pythonには、`ABC`という別のインターフェース定義用の仕組みがある。
+# Pythonには、抽象基底クラスという別の規約定義用の仕組みがある。
 class SupportsLT(Protocol):  # pylint: disable=too-few-public-methods
     """Protocol for values that can be ordered with the less-than operator."""
 
