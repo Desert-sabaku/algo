@@ -45,7 +45,7 @@ class Bucket[KEY, VALUE]:
         return self._value
 
     @value.setter
-    def value(self, new_value: VALUE):
+    def value(self, new_value: VALUE) -> None:
         """Update the bucket value."""
 
         self._value = new_value
@@ -111,7 +111,7 @@ class OpenHash[KEY, VALUE]:
 
         return None
 
-    def search(self, key: KEY):
+    def search(self, key: KEY) -> VALUE | None:
         """Return the value for the key, or ``None`` when the key is absent."""
 
         current = self.search_bucket(key)
