@@ -97,25 +97,29 @@ class OpenHash[KEY, VALUE]:
     def search_bucket(self, key: KEY) -> Bucket[KEY, VALUE] | None:
         """Find and return the bucket for the key, or ``None`` if not found."""
 
-        hash = self._hash_value(key)
-        current = self._buckets[hash]
+        hash_value = self._hash_value(key)
+        current = self._buckets[hash_value]
 
         for _ in range(self._capacity):
             if current.status == Status.EMPTY:
                 break
-            elif current.status == Status.OCCUPIED and current.key == key:
+            if current.status == Status.OCCUPIED and current.key == key:
                 return current
 
-            hash = self._rehash_value(hash)
-            current = self._buckets[hash]
+            hash_value = self._rehash_value(hash_value)
+            current = self._buckets[hash_value]
 
         return None
 
     def search(self, key: KEY):
         """Return the value for the key, or ``None`` when the key is absent."""
 
-        if current := self.search_bucket(key):
-            return current.value
+        current = self.search_bucket(key)
+
+        if current is None:
+            return None
+
+        return current.value
 
     def add(self, key: KEY, value: VALUE) -> bool:
         """Insert a key-value pair if the key does not exist already."""
@@ -123,15 +127,15 @@ class OpenHash[KEY, VALUE]:
         if self.search(key) is not None:
             return False
 
-        hash = self._hash_value(key)
-        current = self._buckets[hash]
+        hash_value = self._hash_value(key)
+        current = self._buckets[hash_value]
 
         for _ in range(self._capacity):
-            if current.status == Status.EMPTY or current.status == Status.DELETED:
-                self.buckets[hash] = Bucket(key, value, Status.OCCUPIED)
+            if current.status in (Status.EMPTY, Status.DELETED):
+                self._buckets[hash_value] = Bucket(key, value, Status.OCCUPIED)
                 return True
-            hash = self._rehash_value(hash)
-            current = self._buckets[hash]
+            hash_value = self._rehash_value(hash_value)
+            current = self._buckets[hash_value]
 
         return False
 
