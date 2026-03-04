@@ -4,10 +4,6 @@ from __future__ import annotations
 
 from collections.abc import Hashable
 from enum import Enum
-from typing import TypeVar
-
-KEY = TypeVar("KEY", bound=Hashable)
-VALUE = TypeVar("VALUE")
 
 
 class Status(Enum):
@@ -17,8 +13,7 @@ class Status(Enum):
     EMPTY = 1
     DELETED = 2
 
-
-class Bucket[KEY, VALUE]:
+class Bucket[KEY: Hashable, VALUE]:
     """Container that stores one key-value pair and its usage status."""
 
     __slots__ = ("_key", "_value", "_status")
@@ -63,7 +58,7 @@ class Bucket[KEY, VALUE]:
         self._status = new_status
 
 
-class OpenHash[KEY, VALUE]:
+class OpenHash[KEY: Hashable, VALUE]:
     """Hash table implementation using linear probing for collision handling."""
 
     def __init__(self, capacity: int) -> None:
@@ -127,7 +122,7 @@ class OpenHash[KEY, VALUE]:
     def add(self, key: KEY, value: VALUE) -> bool:
         """Insert a key-value pair if the key does not exist already."""
 
-        if self.search(key) is not None:
+        if self.search_bucket(key) is not None:
             return False
 
         hash_value = self._hash_value(key)

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from collections.abc import Hashable
-from typing import TypeVar
 
 # もともと`typing`には型ヒント用の別名が多くあった
 # その後Python本体で`collections.abc`側の型がそのまま注釈できるようになり、重複。
@@ -21,14 +20,20 @@ from typing import TypeVar
 # 例えば下の実装は、ハッシュ値でバケットを決定する
 # だからキーは`__hash__`を持ち、等価である必要がある。
 # Unhashableははじいておかないと崩れる。
-K = TypeVar("K", bound=Hashable)
-V = TypeVar("V")
+# K = TypeVar("K", bound=Hashable)
+# V = TypeVar("V")
+# ただ上の宣言、class宣言時に一緒に宣言できるので、不要。覚えておくだけ覚えておく。
 
 
 # クラスでジェネリクスを利用したい場合こんな風に書くらしい
 # 下のpylintのコメントは、パブリックなメソッドが少なすぎると
 # 警告が出るのでその抑制。ゲッター、セッターが増えたのでいらんかも。
-class Node[K, V]:  # pylint: disable=too-few-public-methods
+# ChainedHashの[KEY: Hashable, VALUE]と
+# Nodeのそれは同じように見えるが、
+# スコープが別なので、他人の空似である。
+# ただOpenHash内でBucket[KEY, VALUE]が呼ばれたなら、
+# それは一致する。変数の考え方そのものなので難しくない。
+class Node[K: Hashable, V]:  # pylint: disable=too-few-public-methods
     """Single node used in each hash bucket chain."""
 
     __slots__ = ("_key", "_value", "_next")
@@ -82,7 +87,7 @@ class Node[K, V]:  # pylint: disable=too-few-public-methods
         self._next = next_node
 
 
-class ChainedHash[K, V]:
+class ChainedHash[K: Hashable, V]:
     """Hash table implementation that resolves collisions via chaining."""
 
     def __init__(self, capacity: int) -> None:
