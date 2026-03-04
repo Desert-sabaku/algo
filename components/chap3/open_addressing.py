@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Hashable
 from enum import Enum
-from typing import Hashable, TypeVar
+from typing import TypeVar
 
 KEY = TypeVar("KEY", bound=Hashable)
 VALUE = TypeVar("VALUE")
