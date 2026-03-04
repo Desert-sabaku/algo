@@ -23,11 +23,13 @@ Run entry point:
 uv run python main.py
 ```
 
-Run lint/type checks:
+Run CI-equivalent checks via custom commands (`mise`):
 
 ```bash
-uv run pylint $(git ls-files '*.py')
-uv run mypy $(git ls-files '*.py')
+mise run ruff
+mise run pylint
+mise run mypy
+mise run ci-local
 ```
 
 ## Migration from an existing `.venv`

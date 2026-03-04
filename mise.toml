@@ -1,2 +1,21 @@
 [tools]
 python = "latest"
+
+[tasks.mypy]
+description = "Run mypy type checking (same target as CI)"
+run = "uv run mypy $(git ls-files '*.py')"
+
+[tasks.pylint]
+description = "Run pylint analysis (same target as CI)"
+run = "uv run pylint $(git ls-files '*.py')"
+
+[tasks.ruff]
+description = "Run ruff format check and lint (same target as CI)"
+run = [
+  "uv run ruff format --check $(git ls-files '*.py')",
+  "uv run ruff check $(git ls-files '*.py')",
+]
+
+[tasks.ci-local]
+depends = ["ruff", "pylint", "mypy"]
+description = "Run local CI-equivalent checks"
