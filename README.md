@@ -15,6 +15,12 @@ uv sync
 
 This command creates/updates `.venv` and installs dependencies from `uv.lock`.
 
+Install git hooks (recommended):
+
+```bash
+uv run pre-commit install
+```
+
 ## Daily Commands
 
 Run entry point:
@@ -31,6 +37,14 @@ mise run pylint
 mise run mypy
 mise run ci-local
 ```
+
+Run pre-commit for all files:
+
+```bash
+uv run pre-commit run --all-files
+```
+
+Current pre-commit hooks run `ruff`, `mypy`, and `pylint` checks (plus whitespace/newline fixes).
 
 ## Migration from an existing `.venv`
 
