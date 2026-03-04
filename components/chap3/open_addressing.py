@@ -13,6 +13,7 @@ class Status(Enum):
     EMPTY = 1
     DELETED = 2
 
+
 class Bucket[KEY: Hashable, VALUE]:
     """Container that stores one key-value pair and its usage status."""
 
