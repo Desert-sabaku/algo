@@ -25,12 +25,14 @@ K = TypeVar("K", bound=Hashable)
 V = TypeVar("V")
 
 
+# クラスでジェネリクスを利用したい場合こんな風に書くらしい
+# 下のpylintのコメントは、パブリックなメソッドが少なすぎると
+# 警告が出るのでその抑制。ゲッター、セッターが増えたのでいらんかも。
 class Node[K, V]:  # pylint: disable=too-few-public-methods
     """Single node used in each hash bucket chain."""
 
-    # クラスでジェネリクスを利用したい場合こんな風に書くらしい
-    __slots__ = ("key", "value", "next")
-    # クラス属性。Pythonではインスタンス変数をインスタンス属性というらしい。
+    __slots__ = ("_key", "_value", "_next")
+    # クラス属性。Pythonではクラス変数をクラス属性というらしい。
     # この`__slots__`はこのクラスに持たせる属性を固定する役割を持つ。
     # これを指定しない場合インスタンス変数は内部的に`dict`で管理される。
     # 指定時には固定長だしメモリ割り当てを省けるのでアクセスもメモリも節約になる。
@@ -41,9 +43,43 @@ class Node[K, V]:  # pylint: disable=too-few-public-methods
     def __init__(self, key: K, value: V, next_node: Node[K, V] | None = None) -> None:
         """Initialize a node with key, value, and next-node reference."""
 
-        self.key = key
-        self.value = value
-        self.next = next_node
+        self._key = key
+        self._value = value
+        self._next = next_node
+
+    # decorator。JavaとかRustで見かけるやつ（ちょっと違うが）。
+    # 関数に対して付与し、"前後の処理"を付け加えることができる。
+    # @propertyは組込みのdecoratorで、
+    # getterを作る。
+    @property
+    def key(self) -> K:
+        """Return the node key (read-only)."""
+
+        return self._key
+
+    @property
+    def value(self) -> V:
+        """Return the node value."""
+
+        return self._value
+
+    @value.setter
+    def value(self, new_value: V) -> None:
+        """Update the node value."""
+
+        self._value = new_value
+
+    @property
+    def next(self) -> Node[K, V] | None:
+        """Return the next node in the chain."""
+
+        return self._next
+
+    @next.setter
+    def next(self, next_node: Node[K, V] | None) -> None:
+        """Set the next node in the chain."""
+
+        self._next = next_node
 
 
 class ChainedHash[K, V]:
