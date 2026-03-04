@@ -21,3 +21,10 @@ line-length = 100
 select = ["E", "F", "I"]
 ignore = ["E501"]
 
+[dependency-groups]
+dev = [
+    "mypy>=1.19.1",
+    "pylint>=4.0.5",
+    "ruff>=0.15.4",
+]
+
