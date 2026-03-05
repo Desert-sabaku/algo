@@ -1,10 +1,10 @@
-name: CI (Light)
+name: Pylint (PR)
 
 on:
-    push:
+    pull_request:
 
 jobs:
-    ruff:
+    pylint:
         runs-on: ubuntu-latest
         strategy:
             matrix:
@@ -20,11 +20,7 @@ jobs:
                   python -m pip install --upgrade pip
                   pip install uv
                   uv sync --group dev
-            - name: Format check with ruff
+            - name: Analysing the code with pylint
               continue-on-error: true
               run: |
-                  ruff format --check $(git ls-files '*.py')
-            - name: Lint with ruff
-              continue-on-error: true
-              run: |
-                  uv run ruff format --check $(git ls-files '*.py') 
+                  uv run pylint $(git ls-files "*.py")
