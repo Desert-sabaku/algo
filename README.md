@@ -6,6 +6,7 @@ Algorithms and data structures practice project.
 
 - Python 3.13+
 - `uv` (recommended for environment and dependency management)
+- `mise` (required for `mise run ...` task commands below)
 
 ## Setup
 
