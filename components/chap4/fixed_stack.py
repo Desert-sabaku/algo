@@ -115,6 +115,9 @@ class FixedStack[T]:
         print(self.stack[: self.pointer])
 
 
+type Action = Callable[[FixedStack[int]], None]
+
+
 def _demo() -> None:
     """Run a simple menu demo and show exception handling behavior."""
 
@@ -130,7 +133,7 @@ def _demo() -> None:
             print("整数を入力してください。")
 
     stack = FixedStack[int](capacity)
-    actions: dict[str, Callable[[FixedStack[int]], None]] = {
+    actions: dict[str, Action] = {
         "1": _handle_push,
         "2": _handle_pop,
         "3": _handle_peek,
