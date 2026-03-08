@@ -13,6 +13,10 @@
         "docstrings",
         "pylint",
         "pyproject",
-        "venv"
+        "venv",
+        "Mypy",
+        "newpassword",
+        "organise",
+        "platformdirs"
     ]
 }
