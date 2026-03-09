@@ -44,6 +44,8 @@ class FixedStack[T]:
 
     def push(self, value: T) -> None:
         """Push ``value`` onto the stack."""
+        if self.is_full():
+            raise ValueError("Stack is full")
         self.__stack.append(value)
 
     def pop(self) -> T:
@@ -54,17 +56,13 @@ class FixedStack[T]:
         """
         return self.__stack.pop()
 
-    def find(self, value: T) -> int:
-        """Return the index of ``value`` in the internal storage order.
-
-        Raises:
-            ValueError: If ``value`` is not present in the stack.
-        """
+    def find(self, value: T) -> int | None:
+        """Return the index of ``value`` in the internal storage order, or ``None`` when absent."""
         n = len(self.__stack)
         for offset, v in enumerate(reversed(self.__stack)):
             if v == value:
                 return n - offset - 1
-        raise ValueError(f"{value} is not in stack")
+        return None
 
 
 if __name__ == "__main__":
@@ -76,7 +74,7 @@ if __name__ == "__main__":
 
     print(f"{list(stack)}")
 
-    x = random.randint(1, 10)
+    x = random.choice(list(stack))
     print(f"random {x}")
 
     print(f"{stack.find(x)}")
