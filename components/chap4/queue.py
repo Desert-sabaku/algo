@@ -1,6 +1,8 @@
 """Fixed-length queue implementation"""
 
-from typing import Iterator
+from typing import Iterator, cast
+
+_EMPTY_SLOT = object()
 
 
 class FixedQueue[T]:
@@ -33,7 +35,7 @@ class FixedQueue[T]:
             raise ValueError("Capacity must be at least 1.")
 
         self._capacity = capacity
-        self._queue: list[T | None] = [None] * capacity
+        self._queue: list[T | object] = [_EMPTY_SLOT] * capacity
         # Q. `front`と`rear`の値から`size`は一意に決まりそうだが
         # 独立に`size`属性を定義する必要性はあるのか
         # A. `front`と`rear`の値が同じだと
@@ -106,16 +108,16 @@ class FixedQueue[T]:
             raise self.EmptyError("Failed to dequeue because the queue is empty.")
 
         value = self._queue[self._front]
-        if value is None:
+        if value is _EMPTY_SLOT:
             raise self.InvariantBrokenError(self._front, self._rear, self._size)
 
-        self._queue[self._front] = None
+        self._queue[self._front] = _EMPTY_SLOT
         self._front += 1
         if self._front == self._capacity:
             self._front = 0
 
         self._size -= 1
-        return value
+        return cast(T, value)
 
     def peek(self) -> T:
         """Return the front element without removing it.
@@ -128,10 +130,10 @@ class FixedQueue[T]:
             raise self.EmptyError("Failed to peek because the queue is empty.")
 
         value = self._queue[self._front]
-        if value is None:
+        if value is _EMPTY_SLOT:
             raise self.InvariantBrokenError(self._front, self._rear, self._size)
 
-        return value
+        return cast(T, value)
 
     def find(self, value: T) -> int | None:
         """Return the internal physical index of ``value`` or ``None``."""
@@ -150,7 +152,7 @@ class FixedQueue[T]:
 
     def clear(self) -> None:
         """Remove all elements and reset cursor positions."""
-        self._queue = [None] * self._capacity
+        self._queue = [_EMPTY_SLOT] * self._capacity
         self._size = self._front = self._rear = 0
 
     @property
@@ -158,10 +160,10 @@ class FixedQueue[T]:
         """Return queue contents in logical FIFO order as a list."""
         result = [self._queue[index] for index in self._iter_active_indices()]
 
-        if any(v is None for v in result):
+        if any(v is _EMPTY_SLOT for v in result):
             raise self.InvariantBrokenError(self._front, self._rear, self._size)
 
-        return [v for v in result if v is not None]
+        return [cast(T, v) for v in result]
 
 
 def _run_self_tests() -> None:
@@ -208,6 +210,13 @@ def _run_self_tests() -> None:
     q.clear()
     assert q.is_empty()
     assert q.elements == []
+
+    q_none = FixedQueue[int | None](3)
+    q_none.enqueue(None)
+    q_none.enqueue(1)
+    assert q_none.peek() is None
+    assert q_none.dequeue() is None
+    assert q_none.dequeue() == 1
 
 
 if __name__ == "__main__":
