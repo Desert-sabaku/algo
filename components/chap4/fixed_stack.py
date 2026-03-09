@@ -92,7 +92,7 @@ class FixedStack[T]:
         self.pointer = 0
 
     def find(self, value: T) -> int | None:
-        """Return top-based index of value, or None when not found."""
+        """Return storage index of value, or None when not found."""
 
         for i in range(self.pointer - 1, -1, -1):
             if self.stack[i] == value:
