@@ -1,8 +1,7 @@
 """List all possible combinations of queens in each line."""
 
-from collections.abc import Iterator
-
 COLUMN_COUNT = 8
+TOTAL_PATTERN = COLUMN_COUNT**COLUMN_COUNT
 POSITION = [0] * COLUMN_COUNT
 
 
@@ -16,13 +15,11 @@ def set_position(column_index: int) -> None:
             print(*POSITION)
 
 
-def generate_queen_positions() -> Iterator[str]:
-    """Yield a possible pattern of the queens arrangement."""
-    for position_index in range(COLUMN_COUNT**COLUMN_COUNT):
-        yield f"{position_index:08o}"
-
-
 if __name__ == "__main__":
-    queen_positions_generator = generate_queen_positions()
+    # Generator[Y, S, R]
+    # Y: yield する型。この場合 str になる。
+    # S: send で受け取る型。引数的な奴。この場合 None。
+    # R: 最後 return する型。反復の最後の返り値。この場合 None。
+    queen_positions_generator = (f"{i:08o}" for i in range(TOTAL_PATTERN))
     for _ in range(10):
         print(next(queen_positions_generator))
