@@ -1,16 +1,6 @@
 """List all possible combinations of queens in each line."""
 
-import sys
 from collections.abc import Iterator
-from pathlib import Path
-
-try:
-    from components.chap2.conv import convert_base
-except ModuleNotFoundError:
-    project_root = Path(__file__).resolve().parents[2]
-    if str(project_root) not in sys.path:
-        sys.path.insert(0, str(project_root))
-    from components.chap2.conv import convert_base
 
 COLUMN_COUNT = 8
 POSITION = [0] * COLUMN_COUNT
@@ -29,7 +19,7 @@ def set_position(column_index: int) -> None:
 def generate_queen_positions() -> Iterator[str]:
     """Yield a possible pattern of the queens arrangement."""
     for position_index in range(COLUMN_COUNT**COLUMN_COUNT):
-        yield convert_base(position_index, COLUMN_COUNT).zfill(COLUMN_COUNT)
+        yield f"{position_index:08o}"
 
 
 if __name__ == "__main__":
