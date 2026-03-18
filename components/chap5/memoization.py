@@ -5,6 +5,9 @@ memo: list[str] = [""] * 128
 
 def recursive(n: int) -> None:
     """Do the same move of `recursive.py` with a memo."""
+    if n < -1 or n + 1 >= len(memo):
+        raise ValueError(f"n must be between -1 and {len(memo) - 2}.")
+
     if memo[n + 1]:
         print(memo[n + 1], end="")
         return
