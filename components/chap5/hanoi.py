@@ -7,6 +7,11 @@ type DiskInfo = dict[Literal["count", "src", "dst"], int]
 
 def move(disk_count: int, src_axis: int, dst_axis: int) -> list[DiskInfo]:
     """Return the order of move to solve the tower of Hanoi."""
+    if disk_count <= 1:
+        raise ValueError("disk_count must be >= 1.")
+    if src_axis not in (1, 2, 3) or dst_axis not in (1, 2, 3) or src_axis == dst_axis:
+        raise ValueError("src_axis and dst_axis must be different values in {1, 2, 3}.")
+
     # 1, 2, 3 軸があるものとして、「srcでもdstでもない残り」の軸を求め、それを中間軸とする
     middle_axis = 6 - src_axis - dst_axis
 
