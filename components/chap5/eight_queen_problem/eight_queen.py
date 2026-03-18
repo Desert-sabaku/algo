@@ -78,10 +78,10 @@ class PlacementState:
         """
         positive_diagonal_index = self.positive_diagonal_index(column_index, row_index)
         negative_diagonal_index = self.negative_diagonal_index(column_index, row_index)
-        return (
-            not self.occupied_rows[row_index]
-            and not self.occupied_positive_diagonals[positive_diagonal_index]
-            and not self.occupied_negative_diagonals[negative_diagonal_index]
+        return not (
+            self.occupied_rows[row_index]
+            or self.occupied_positive_diagonals[positive_diagonal_index]
+            or self.occupied_negative_diagonals[negative_diagonal_index]
         )
 
     def place(self, column_index: int, row_index: int) -> None:
