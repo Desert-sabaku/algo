@@ -1,5 +1,5 @@
 """
-List all possible arrangements of the queens so that no two queens occupy the same row or column.
+List all possible queen arrangements such that no two queens share a row, column, or diagonal.
 """
 
 from collections.abc import Iterator, Sequence
@@ -241,6 +241,8 @@ class SolutionPrinter:  # pylint: disable=too-few-public-methods
         Returns:
             int: Number of solutions actually printed.
         """
+        if max_solutions < 0:
+            raise ValueError("max_solutions must be >= 0")
         printed_count = 0
         for printed_count, solution in enumerate(islice(solutions, max_solutions), start=1):
             print(self.renderer.render(solution))
