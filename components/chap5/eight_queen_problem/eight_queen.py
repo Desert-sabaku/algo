@@ -3,6 +3,7 @@ List all possible arrangements of the queens so that no two queens occupy the sa
 """
 
 from collections.abc import Iterator
+from dataclasses import dataclass, field
 from itertools import islice
 from typing import Protocol
 
@@ -10,7 +11,7 @@ DEFAULT_COLUMN_COUNT = 8
 DEFAULT_DISPLAY_SOLUTION_COUNT = 97
 
 
-class SolutionRenderer(Protocol):
+class SolutionRenderer(Protocol):  # pylint: disable=too-few-public-methods
     """Protocol for rendering a single queen solution."""
 
     def render(self, solution: list[int]) -> str:
@@ -18,7 +19,7 @@ class SolutionRenderer(Protocol):
         raise NotImplementedError
 
 
-class QueenBoardRenderer:
+class QueenBoardRenderer:  # pylint: disable=too-few-public-methods
     """Render queen positions as a board string."""
 
     def __init__(
@@ -43,7 +44,51 @@ class QueenBoardRenderer:
         return "\n".join(rows)
 
 
-class EightQueenSolver:
+@dataclass
+class PlacementState:
+    """Track queen placement constraints."""
+
+    column_count: int
+    diagonal_count: int
+    position: list[int] = field(init=False)
+    horizontal: list[bool] = field(init=False)
+    positive_diagonal: list[bool] = field(init=False)
+    negative_diagonal: list[bool] = field(init=False)
+
+    def __post_init__(self) -> None:
+        self.position = [0] * self.column_count
+        self.horizontal = [False] * self.column_count
+        self.positive_diagonal = [False] * self.diagonal_count
+        self.negative_diagonal = [False] * self.diagonal_count
+
+    def get_positive_diagonal_index(self, column_index: int, row_index: int) -> int:
+        """Return the index for the positive-sloped diagonal (/)."""
+        return column_index + row_index
+
+    def get_negative_diagonal_index(self, column_index: int, row_index: int) -> int:
+        """Return the index for the negative-sloped diagonal (\\)."""
+        return column_index - row_index + self.column_count - 1
+
+    def can_place_queen(self, column_index: int, row_index: int) -> bool:
+        """Check whether a queen can be safely placed at the given position."""
+        positive_diagonal_index = self.get_positive_diagonal_index(column_index, row_index)
+        negative_diagonal_index = self.get_negative_diagonal_index(column_index, row_index)
+        return (
+            not self.horizontal[row_index]
+            and not self.positive_diagonal[positive_diagonal_index]
+            and not self.negative_diagonal[negative_diagonal_index]
+        )
+
+    def set_queen_state(self, column_index: int, row_index: int, is_placed: bool) -> None:
+        """Mark or unmark occupancy for row and diagonals."""
+        positive_diagonal_index = self.get_positive_diagonal_index(column_index, row_index)
+        negative_diagonal_index = self.get_negative_diagonal_index(column_index, row_index)
+        self.horizontal[row_index] = is_placed
+        self.positive_diagonal[positive_diagonal_index] = is_placed
+        self.negative_diagonal[negative_diagonal_index] = is_placed
+
+
+class EightQueenSolver:  # pylint: disable=too-few-public-methods
     """Generate solutions for the N-Queens problem."""
 
     def __init__(self, column_count: int = DEFAULT_COLUMN_COUNT) -> None:
@@ -51,108 +96,32 @@ class EightQueenSolver:
         self.diagonal_count = 2 * column_count - 1
         self.total_pattern = column_count**column_count
 
-    def _get_positive_diagonal_index(self, column_index: int, row_index: int) -> int:
-        """Return the index for the positive-sloped diagonal (/)."""
-        return column_index + row_index
-
-    def _get_negative_diagonal_index(self, column_index: int, row_index: int) -> int:
-        """Return the index for the negative-sloped diagonal (\\)."""
-        return column_index - row_index + self.column_count - 1
-
-    def _can_place_queen(
-        self,
-        column_index: int,
-        row_index: int,
-        is_queen_placed_horizontal: list[bool],
-        is_queen_placed_positive_diagonal: list[bool],
-        is_queen_placed_negative_diagonal: list[bool],
-    ) -> bool:
-        """Check whether a queen can be safely placed at the given position."""
-        positive_diagonal_index = self._get_positive_diagonal_index(column_index, row_index)
-        negative_diagonal_index = self._get_negative_diagonal_index(column_index, row_index)
-        return (
-            not is_queen_placed_horizontal[row_index]
-            and not is_queen_placed_positive_diagonal[positive_diagonal_index]
-            and not is_queen_placed_negative_diagonal[negative_diagonal_index]
-        )
-
-    def _set_queen_state(
-        self,
-        column_index: int,
-        row_index: int,
-        is_placed: bool,
-        is_queen_placed_horizontal: list[bool],
-        is_queen_placed_positive_diagonal: list[bool],
-        is_queen_placed_negative_diagonal: list[bool],
-    ) -> None:
-        """Mark or unmark occupancy for row and diagonals."""
-        positive_diagonal_index = self._get_positive_diagonal_index(column_index, row_index)
-        negative_diagonal_index = self._get_negative_diagonal_index(column_index, row_index)
-        is_queen_placed_horizontal[row_index] = is_placed
-        is_queen_placed_positive_diagonal[positive_diagonal_index] = is_placed
-        is_queen_placed_negative_diagonal[negative_diagonal_index] = is_placed
-
     def _generate_queen_positions(
         self,
         column_index: int,
-        position: list[int],
-        is_queen_placed_horizontal: list[bool],
-        is_queen_placed_positive_diagonal: list[bool],
-        is_queen_placed_negative_diagonal: list[bool],
+        state: PlacementState,
     ) -> Iterator[list[int]]:
-        """MAIN LOGIC. Arrange queens recursively starting from the given column."""
+        """Arrange queens recursively starting from the given column."""
         for row_index in range(self.column_count):
-            if self._can_place_queen(
-                column_index,
-                row_index,
-                is_queen_placed_horizontal,
-                is_queen_placed_positive_diagonal,
-                is_queen_placed_negative_diagonal,
-            ):
-                position[column_index] = row_index
+            if state.can_place_queen(column_index, row_index):
+                state.position[column_index] = row_index
                 if column_index != self.column_count - 1:
-                    self._set_queen_state(
-                        column_index,
-                        row_index,
-                        True,
-                        is_queen_placed_horizontal,
-                        is_queen_placed_positive_diagonal,
-                        is_queen_placed_negative_diagonal,
-                    )
+                    state.set_queen_state(column_index, row_index, True)
                     yield from self._generate_queen_positions(
                         column_index + 1,
-                        position,
-                        is_queen_placed_horizontal,
-                        is_queen_placed_positive_diagonal,
-                        is_queen_placed_negative_diagonal,
+                        state,
                     )
-                    self._set_queen_state(
-                        column_index,
-                        row_index,
-                        False,
-                        is_queen_placed_horizontal,
-                        is_queen_placed_positive_diagonal,
-                        is_queen_placed_negative_diagonal,
-                    )
+                    state.set_queen_state(column_index, row_index, False)
                 else:
-                    yield position.copy()
+                    yield state.position.copy()
 
     def generate_queen_positions(self) -> Iterator[list[int]]:
         """Generate all queen placements for the configured board size."""
-        position = [0] * self.column_count
-        is_queen_placed_horizontal = [False] * self.column_count
-        is_queen_placed_positive_diagonal = [False] * self.diagonal_count
-        is_queen_placed_negative_diagonal = [False] * self.diagonal_count
-        yield from self._generate_queen_positions(
-            0,
-            position,
-            is_queen_placed_horizontal,
-            is_queen_placed_positive_diagonal,
-            is_queen_placed_negative_diagonal,
-        )
+        state = PlacementState(self.column_count, self.diagonal_count)
+        yield from self._generate_queen_positions(0, state)
 
 
-class SolutionPresenter:
+class SolutionPresenter:  # pylint: disable=too-few-public-methods
     """Present generated solutions without owning solving logic."""
 
     def __init__(self, solution_renderer: SolutionRenderer) -> None:
