@@ -12,15 +12,7 @@ def factorial(n: int) -> int:
 
 
 if __name__ == "__main__":
-    N = int(input())
-    try:
-        print(f"{N}の階乗は{math.factorial(N)}")
-    except ValueError as e:
-        print(f"{e}")
+    N = int(input("N: "))
+    print(factorial(N))
 
-    try:
-        assert math.factorial(N) == factorial(N)
-    except AssertionError as e:
-        print(e)
-    else:
-        print(f"{factorial.__name__} function passed the test.")
+    print("Answer by built-in function:", math.factorial(N))
