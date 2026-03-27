@@ -47,6 +47,36 @@ uv run pre-commit run --all-files
 
 Current pre-commit hooks run `ruff`, `mypy`, and `pylint` checks (plus whitespace/newline fixes).
 
+## Project Structure
+
+This repository uses a chapter-oriented `src` layout for maintainability.
+
+```text
+src/
+	algo/
+		chapters/
+			chapter_01_basics/
+			chapter_02_complexity_primes/
+			chapter_03_search_hash/
+			chapter_04_stacks_queues/
+			chapter_05_recursion/
+			chapter_06_sorting/
+notes/
+	chapters/
+		chapter_05_recursion/
+main.py
+```
+
+- Place all executable practice code under `src/algo/chapters/`.
+- Keep non-code chapter material (notes, diagrams, references) under `notes/`.
+- Add new chapters as `chapter_XX_topic` to preserve natural ordering and readability.
+
+Run a chapter module directly with:
+
+```bash
+uv run python src/algo/chapters/chapter_03_search_hash/binary_search.py
+```
+
 ## Migration from an existing `.venv`
 
 If `.venv` was originally created with `python -m venv`, you can still migrate to `uv`:

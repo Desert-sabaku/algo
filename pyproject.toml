@@ -9,13 +9,18 @@ version = "0.1.0"
 [tool.pylint.format]
 max-line-length = 100
 
+[tool.pylint.main]
+source-roots = ["src"]
+
 [tool.mypy]
+explicit_package_bases = true
+files = ["src", "main.py"]
 python_version = "3.13"
 strict = true
-explicit_package_bases = true
 
 [tool.ruff]
 line-length = 100
+src = ["src"]
 target-version = "py313"
 
 [tool.ruff.lint]
