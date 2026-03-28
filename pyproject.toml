@@ -14,7 +14,8 @@ source-roots = ["src"]
 
 [tool.mypy]
 explicit_package_bases = true
-files = ["src", "main.py"]
+files = ["src/algo", "main.py"]
+mypy_path = ["src"]
 python_version = "3.13"
 strict = true
 

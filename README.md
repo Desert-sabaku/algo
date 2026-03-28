@@ -39,6 +39,13 @@ mise run mypy
 mise run ci-local
 ```
 
+Static analysis configuration is committed in project files:
+
+- `pyproject.toml` for `mypy`, `ruff`, and `pylint`
+- `pyrightconfig.json` for `pyright`/Pylance
+
+This keeps import resolution and strictness consistent across environments and editors.
+
 Run pre-commit for all files:
 
 ```bash

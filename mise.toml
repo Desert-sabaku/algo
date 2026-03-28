@@ -1,5 +1,5 @@
 [tools]
-python = "latest"
+python = "3.13"
 
 [tasks.mypy]
 description = "Run mypy type checking (same target as CI)"
