@@ -49,9 +49,32 @@ def bubble_sort3[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
     return cp
 
 
+def shaker_sort[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
+    """Sorting using the bi-direction bubble sort."""
+    cp = deepcopy(seq)
+    left = 0
+    right = len(seq) - 1
+    last = right
+    while left < right:
+        for i in range(right, left, -1):
+            if cp[i - 1] > cp[i]:
+                cp[i - 1], cp[i] = cp[i], cp[i - 1]
+                last = i
+        left = last
+
+        for i in range(left, right):
+            if cp[i] > cp[i + 1]:
+                cp[i], cp[i + 1] = cp[i + 1], cp[i]
+                last = i
+        right = last
+
+    return cp
+
+
 if __name__ == "__main__":
     print(test := [random.randint(0, 10) for _ in range(1000)])
 
     cProfile.run("bubble_sort(test)")
     cProfile.run("bubble_sort2(test)")
     cProfile.run("bubble_sort3(test)")
+    cProfile.run("shaker_sort(test)")
