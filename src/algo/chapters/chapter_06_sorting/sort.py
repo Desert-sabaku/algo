@@ -1,6 +1,5 @@
 """Implementations of sorting using various algorithms."""
 
-import cProfile
 import random
 from copy import deepcopy
 from typing import MutableSequence
@@ -71,10 +70,26 @@ def shaker_sort[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
     return cp
 
 
-if __name__ == "__main__":
-    print(test := [random.randint(0, 10) for _ in range(1000)])
+def selection_sort[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
+    """Sorting using the bi-direction bubble sort."""
+    length = len(seq)
+    cp = deepcopy(seq)
+    for i in range(length - 1):
+        m = i
+        # 最小の値を探す
+        for j in range(i + 1, length):
+            if cp[j] < cp[m]:
+                m = j
+        cp[i], cp[m] = cp[m], cp[i]
 
-    cProfile.run("bubble_sort(test)")
-    cProfile.run("bubble_sort2(test)")
-    cProfile.run("bubble_sort3(test)")
-    cProfile.run("shaker_sort(test)")
+    return cp
+
+
+if __name__ == "__main__":
+    print(test := [random.randint(0, 100) for _ in range(20)])
+
+    print(bubble_sort(test))
+    print(bubble_sort2(test))
+    print(bubble_sort3(test))
+    print(shaker_sort(test))
+    print(selection_sort(test))
