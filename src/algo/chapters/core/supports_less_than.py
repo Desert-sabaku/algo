@@ -1,4 +1,4 @@
-"""Implementation the protocol for values that can be ordered with the less-than operator."""
+"""Implementation of the protocol for values that can be ordered with the less-than operator."""
 
 from typing import Protocol, Self
 
