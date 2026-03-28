@@ -34,8 +34,24 @@ def bubble_sort2[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
     return cp
 
 
+def bubble_sort3[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
+    """Sorting using the straight exchange sort."""
+    cp = deepcopy(seq)
+    left = 0
+    right = len(seq) - 1
+    while left < right:
+        last_swap_index = right
+        for i in range(right, left, -1):
+            if cp[i - 1] > cp[i]:
+                cp[i - 1], cp[i] = cp[i], cp[i - 1]
+                last_swap_index = i
+        left = last_swap_index
+    return cp
+
+
 if __name__ == "__main__":
     print(test := [random.randint(0, 10) for _ in range(1000)])
 
     cProfile.run("bubble_sort(test)")
     cProfile.run("bubble_sort2(test)")
+    cProfile.run("bubble_sort3(test)")
