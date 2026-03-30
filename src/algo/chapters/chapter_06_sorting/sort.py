@@ -2,15 +2,15 @@
 
 import random
 from copy import deepcopy
-from typing import MutableSequence
+from typing import Sequence
 
 from algo.chapters.core.supports_less_than import SupportsLT
 
 
-def bubble_sort[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
+def bubble_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
     """Sorting using the straight exchange sort"""
     right = len(seq) - 1
-    cp = deepcopy(seq)
+    cp = list(deepcopy(seq))
     for i in range(right):
         for j in range(right, i, -1):
             if cp[j - 1] > cp[j]:
@@ -18,10 +18,10 @@ def bubble_sort[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
     return cp
 
 
-def bubble_sort2[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
+def bubble_sort2[T: SupportsLT](seq: Sequence[T]) -> list[T]:
     """Sorting using the straight exchange sort"""
     length = len(seq)
-    cp = deepcopy(seq)
+    cp = list(deepcopy(seq))
     for i in range(length - 1):
         exchange_count = 0
         for j in range(length - 1, i, -1):
@@ -33,9 +33,9 @@ def bubble_sort2[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
     return cp
 
 
-def bubble_sort3[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
+def bubble_sort3[T: SupportsLT](seq: Sequence[T]) -> list[T]:
     """Sorting using the straight exchange sort."""
-    cp = deepcopy(seq)
+    cp = list(deepcopy(seq))
     left = 0
     right = len(seq) - 1
     while left < right:
@@ -48,9 +48,9 @@ def bubble_sort3[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
     return cp
 
 
-def shaker_sort[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
+def shaker_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
     """Sorting using the bi-direction bubble sort."""
-    cp = deepcopy(seq)
+    cp = list(deepcopy(seq))
     left = 0
     right = len(seq) - 1
     last = right
@@ -70,10 +70,10 @@ def shaker_sort[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
     return cp
 
 
-def selection_sort[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
+def selection_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
     """Sorting using the straight selection sort."""
     length = len(seq)
-    cp = deepcopy(seq)
+    cp = list(deepcopy(seq))
     for i in range(length - 1):
         m = i
         # 最小の値を探す
@@ -85,9 +85,9 @@ def selection_sort[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]
     return cp
 
 
-def shuttle_sort[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
+def shuttle_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
     """Sorting using the straight insertion sort."""
-    cp = deepcopy(seq)
+    cp = list(deepcopy(seq))
     for i in range(1, len(cp)):
         insert_value = cp[i]
 
@@ -101,9 +101,9 @@ def shuttle_sort[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
     return cp
 
 
-def binary_insertion_sort[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
+def binary_insertion_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
     """Sorting using the binary insertion sort."""
-    cp = deepcopy(seq)
+    cp = list(deepcopy(seq))
     for i in range(1, len(cp)):
         key = cp[i]
         left, right = 0, i
