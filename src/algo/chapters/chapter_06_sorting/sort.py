@@ -85,11 +85,29 @@ def selection_sort[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]
     return cp
 
 
-if __name__ == "__main__":
-    print(test := [random.randint(0, 100) for _ in range(20)])
+def shuttle_sort[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
+    """Sorting using the straight insertion sort."""
+    cp = deepcopy(seq)
+    for i in range(1, len(cp)):
+        insert_value = cp[i]
 
-    print(bubble_sort(test))
-    print(bubble_sort2(test))
-    print(bubble_sort3(test))
-    print(shaker_sort(test))
-    print(selection_sort(test))
+        # right shift
+        j = i
+        while j > 0 and insert_value < cp[j - 1]:
+            cp[j] = cp[j - 1]
+            j -= 1
+        cp[j] = insert_value
+
+    return cp
+
+
+if __name__ == "__main__":
+    print(test := [random.randint(0, 10) for _ in range(5)])
+
+    # print(bubble_sort(test))
+    # print(bubble_sort2(test))
+    # print(bubble_sort3(test))
+    # print(shaker_sort(test))
+    # print(selection_sort(test))
+    print(shuttle_sort(test))
+    # print(binary_insertion_sort(test))
