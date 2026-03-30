@@ -101,6 +101,32 @@ def shuttle_sort[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
     return cp
 
 
+def binary_insertion_sort[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
+    """Sorting using the binary insertion sort."""
+    cp = deepcopy(seq)
+    for i in range(1, len(cp)):
+        key = cp[i]
+        left, right = 0, i
+
+        # 目的列はソート済みなので二分探索が可能
+        # 範囲は [left, right)
+        while left < right:
+            middle = (left + right) // 2
+            if key < cp[middle]:
+                right = middle
+            else:
+                left = middle + 1
+
+        insert_position = left
+
+        # right shift
+        for j in range(i, insert_position, -1):
+            cp[j] = cp[j - 1]
+        cp[insert_position] = key
+
+    return cp
+
+
 if __name__ == "__main__":
     print(test := [random.randint(0, 10) for _ in range(5)])
 
@@ -109,5 +135,5 @@ if __name__ == "__main__":
     # print(bubble_sort3(test))
     # print(shaker_sort(test))
     # print(selection_sort(test))
-    print(shuttle_sort(test))
-    # print(binary_insertion_sort(test))
+    # print(shuttle_sort(test))
+    print(binary_insertion_sort(test))
