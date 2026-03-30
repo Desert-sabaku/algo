@@ -1,5 +1,6 @@
 """Implementations of sorting using various algorithms."""
 
+import bisect
 import random
 from copy import deepcopy
 from typing import Sequence
@@ -124,6 +125,16 @@ def binary_insertion_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
             cp[j] = cp[j - 1]
         cp[insert_position] = key
 
+    return cp
+
+
+def binary_insertion_sort2[T: SupportsLT](
+    seq: Sequence[T],
+) -> list[T]:
+    """Sorting using the binary insertion sort."""
+    cp = list(deepcopy(seq))
+    for i in range(1, len(cp)):
+        bisect.insort(cp, cp.pop(i), 0, i)
     return cp
 
 
