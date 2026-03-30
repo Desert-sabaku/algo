@@ -71,7 +71,7 @@ def shaker_sort[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
 
 
 def selection_sort[T: SupportsLT](seq: MutableSequence[T]) -> MutableSequence[T]:
-    """Sorting using the bi-direction bubble sort."""
+    """Sorting using the straight selection sort."""
     length = len(seq)
     cp = deepcopy(seq)
     for i in range(length - 1):
