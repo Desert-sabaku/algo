@@ -3,9 +3,7 @@
 import bisect
 import random
 from copy import deepcopy
-from typing import Sequence
-
-from algo.chapters.core.supports_less_than import SupportsLT
+from typing import Sequence, SupportsLT
 
 
 def bubble_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
