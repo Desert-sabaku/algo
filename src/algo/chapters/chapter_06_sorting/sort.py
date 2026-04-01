@@ -138,6 +138,29 @@ def binary_insertion_sort2[T: SupportsLT](
     return cp
 
 
+def shell_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
+    """Sorting using the shell sort."""
+    cp = list(deepcopy(seq))
+    full_length = len(cp)
+    half_length = full_length // 2
+
+    while half_length > 0:
+        # 配列の後半に注目する
+        for i in range(half_length, full_length):
+            # 基準となる添え字の相対的な距離から前半の添え字を算出
+            j = i - half_length
+
+            # ここ大体挿入ソートと一緒
+            insert_value = cp[i]
+            while j >= 0 and cp[j] > insert_value:
+                cp[j + half_length] = cp[j]
+                j -= half_length
+            cp[j + half_length] = insert_value
+
+        half_length //= 2
+    return cp
+
+
 if __name__ == "__main__":
     print(test := [random.randint(0, 10) for _ in range(5)])
 
@@ -147,4 +170,5 @@ if __name__ == "__main__":
     # print(shaker_sort(test))
     # print(selection_sort(test))
     # print(shuttle_sort(test))
-    print(binary_insertion_sort(test))
+    # print(binary_insertion_sort(test))
+    print(shell_sort(test))
