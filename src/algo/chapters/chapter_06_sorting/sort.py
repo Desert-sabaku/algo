@@ -161,6 +161,30 @@ def shell_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
     return cp
 
 
+def shell_sort2[T: SupportsLT](seq: Sequence[T]) -> list[T]:
+    """Sorting using the shell sort."""
+    # 間隔を、121, 40, 13, 4, 1のように減らしていく。
+    # 間隔が互いに倍数とならないようにすれば、要素が十分にかき混ぜられ、効率化が期待できる。
+    cp = list(deepcopy(seq))
+    length = len(cp)
+    h = 1
+
+    while h < length // 3:
+        h = h * 3 + 1
+
+    while h > 0:
+        for i in range(h, length):
+            j = i - h
+            insert_value = cp[i]
+            while j >= 0 and cp[j] > insert_value:
+                cp[j + h] = cp[j]
+                j -= h
+            cp[j + h] = insert_value
+        h //= 3
+
+    return cp
+
+
 if __name__ == "__main__":
     print(test := [random.randint(0, 10) for _ in range(5)])
 
