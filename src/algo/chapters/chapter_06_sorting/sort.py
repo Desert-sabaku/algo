@@ -1,8 +1,8 @@
 """Implementations of sorting using various algorithms."""
 
 import bisect
-import random
 import math
+import random
 from copy import deepcopy
 from typing import Sequence
 
@@ -179,6 +179,57 @@ def shell_sort2[T: SupportsLT](seq: Sequence[T]) -> list[T]:
     return cp
 
 
+def partition_using_qsort[T: SupportsLT](seq: list[T]):
+    left = 0
+    right = len(seq) - 1
+    mid = len(seq) // 2
+
+    while left <= right:
+        while seq[left] < mid:
+            left += 1
+        while seq[mid] < seq[right]:
+            right -= 1
+        if left <= right:
+            seq[left], seq[right] = seq[right], seq[left]
+            left += 1
+            right -= 1
+
+    print(seq)
+    print("A pivot: ", mid)
+    print("A group with values equal to or less than the pivot: ", seq[:left])
+
+    if left > right + 1:
+        print("A group matching the pivot value: ", seq[right + 1 : left])
+
+    print("A group with values equal to or greater than the pivot: ", seq[right + 1 :])
+
+
+def quick_sort_impl[T: SupportsLT](seq: list[T], start: int, end: int):
+    left, right = start, end
+    mid = (start + end) // 2
+
+    while left <= right:
+        while seq[left] < seq[mid]:
+            left += 1
+        while seq[mid] < seq[right]:
+            right -= 1
+        if left <= right:
+            seq[left], seq[right] = seq[right], seq[left]
+            left += 1
+            right -= 1
+
+    if start < right:
+        quick_sort_impl(seq, start, left)
+    if left < end:
+        quick_sort_impl(seq, left, end)
+
+
+def quick_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
+    cp = list(deepcopy(seq))
+    quick_sort_impl(cp, 0, len(cp) - 1)
+    return cp
+
+
 if __name__ == "__main__":
     print(test := [random.randint(0, 10) for _ in range(10)])
 
@@ -189,5 +240,7 @@ if __name__ == "__main__":
     # print(selection_sort(test))
     # print(shuttle_sort(test))
     # print(binary_insertion_sort(test))
-    print(shell_sort(test))
-    print(shell_sort2(test))
+    # print(shell_sort(test))
+    # print(shell_sort2(test))
+    partition_using_qsort(test)
+    print(quick_sort(test))
