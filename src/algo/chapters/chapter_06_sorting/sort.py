@@ -2,6 +2,7 @@
 
 import bisect
 import random
+import math
 from copy import deepcopy
 from typing import Sequence
 
@@ -10,26 +11,24 @@ from algo.chapters.core.supports_less_than import SupportsLT
 
 def bubble_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
     """Sorting using the straight exchange sort"""
-    right = len(seq) - 1
     cp = list(deepcopy(seq))
-    for i in range(right):
-        for j in range(right, i, -1):
-            if cp[j - 1] > cp[j]:
-                cp[j - 1], cp[j] = cp[j], cp[j - 1]
+    for i in range(len(cp)):
+        for j in range(len(cp) - i - 1):
+            if cp[j] > cp[j + 1]:
+                cp[j], cp[j + 1] = cp[j + 1], cp[j]
     return cp
 
 
 def bubble_sort2[T: SupportsLT](seq: Sequence[T]) -> list[T]:
     """Sorting using the straight exchange sort"""
-    length = len(seq)
     cp = list(deepcopy(seq))
-    for i in range(length - 1):
-        exchange_count = 0
-        for j in range(length - 1, i, -1):
-            if cp[j - 1] > cp[j]:
-                cp[j - 1], cp[j] = cp[j], cp[j - 1]
-                exchange_count += 1
-        if exchange_count == 0:
+    for i in range(len(cp)):
+        swaped = False
+        for j in range(len(cp) - i - 1):
+            if cp[j] > cp[j + 1]:
+                cp[j], cp[j + 1] = cp[j + 1], cp[j]
+                swaped = True
+        if not swaped:
             return cp
     return cp
 
@@ -37,15 +36,16 @@ def bubble_sort2[T: SupportsLT](seq: Sequence[T]) -> list[T]:
 def bubble_sort3[T: SupportsLT](seq: Sequence[T]) -> list[T]:
     """Sorting using the straight exchange sort."""
     cp = list(deepcopy(seq))
-    left = 0
-    right = len(seq) - 1
-    while left < right:
-        last_swap_index = right
-        for i in range(right, left, -1):
-            if cp[i - 1] > cp[i]:
-                cp[i - 1], cp[i] = cp[i], cp[i - 1]
-                last_swap_index = i
-        left = last_swap_index
+    end_index = len(cp) - 1
+
+    while end_index > 0:
+        last_swap_index = 0
+        for j in range(end_index):
+            if cp[j] > cp[j + 1]:
+                cp[j], cp[j + 1] = cp[j + 1], cp[j]
+                last_swap_index = j
+        end_index = last_swap_index
+
     return cp
 
 
@@ -73,12 +73,11 @@ def shaker_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
 
 def selection_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
     """Sorting using the straight selection sort."""
-    length = len(seq)
     cp = list(deepcopy(seq))
-    for i in range(length - 1):
+    for i in range(len(cp) - 1):
         m = i
         # 最小の値を探す
-        for j in range(i + 1, length):
+        for j in range(i + 1, len(cp)):
             if cp[j] < cp[m]:
                 m = j
         cp[i], cp[m] = cp[m], cp[i]
@@ -141,12 +140,11 @@ def binary_insertion_sort2[T: SupportsLT](
 def shell_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
     """Sorting using the shell sort."""
     cp = list(deepcopy(seq))
-    length = len(cp)
-    h = length // 2
+    h = len(cp) // 2
 
     while h > 0:
         # 配列の後半に注目する
-        for i in range(h, length):
+        for i in range(h, len(cp)):
             # 基準となる添え字の相対的な距離から前半の添え字を算出
             j = i - h
 
@@ -166,14 +164,10 @@ def shell_sort2[T: SupportsLT](seq: Sequence[T]) -> list[T]:
     # 間隔を、121, 40, 13, 4, 1のように減らしていく。
     # 間隔が互いに倍数とならないようにすれば、要素が十分にかき混ぜられ、効率化が期待できる。
     cp = list(deepcopy(seq))
-    length = len(cp)
-    h = 1
-
-    while h < length // 3:
-        h = h * 3 + 1
+    h = (3 ** math.floor(math.log(2 * len(cp) - 1, 3)) - 1) // 2
 
     while h > 0:
-        for i in range(h, length):
+        for i in range(h, len(cp)):
             j = i - h
             insert_value = cp[i]
             while j >= 0 and cp[j] > insert_value:
@@ -186,7 +180,7 @@ def shell_sort2[T: SupportsLT](seq: Sequence[T]) -> list[T]:
 
 
 if __name__ == "__main__":
-    print(test := [random.randint(0, 10) for _ in range(5)])
+    print(test := [random.randint(0, 10) for _ in range(10)])
 
     # print(bubble_sort(test))
     # print(bubble_sort2(test))
@@ -196,3 +190,4 @@ if __name__ == "__main__":
     # print(shuttle_sort(test))
     # print(binary_insertion_sort(test))
     print(shell_sort(test))
+    print(shell_sort2(test))
