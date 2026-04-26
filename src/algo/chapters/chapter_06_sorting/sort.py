@@ -9,110 +9,110 @@ from typing import Sequence
 from algo.chapters.core.supports_less_than import SupportsLT
 
 
-def bubble_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
+def bubble_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
     """Sorting using the straight exchange sort"""
-    cp = list(deepcopy(seq))
-    for i in range(len(cp)):
-        for j in range(len(cp) - i - 1):
-            if cp[j] > cp[j + 1]:
-                cp[j], cp[j + 1] = cp[j + 1], cp[j]
-    return cp
+    rslt = list(deepcopy(src))
+    for i in range(len(rslt)):
+        for j in range(len(rslt) - i - 1):
+            if rslt[j] > rslt[j + 1]:
+                rslt[j], rslt[j + 1] = rslt[j + 1], rslt[j]
+    return rslt
 
 
-def bubble_sort2[T: SupportsLT](seq: Sequence[T]) -> list[T]:
+def bubble_sort2[T: SupportsLT](src: Sequence[T]) -> list[T]:
     """Sorting using the straight exchange sort"""
-    cp = list(deepcopy(seq))
-    for i in range(len(cp)):
-        swaped = False
-        for j in range(len(cp) - i - 1):
-            if cp[j] > cp[j + 1]:
-                cp[j], cp[j + 1] = cp[j + 1], cp[j]
-                swaped = True
-        if not swaped:
-            return cp
-    return cp
+    rslt = list(deepcopy(src))
+    for i in range(len(rslt)):
+        swapped = False
+        for j in range(len(rslt) - i - 1):
+            if rslt[j] > rslt[j + 1]:
+                rslt[j], rslt[j + 1] = rslt[j + 1], rslt[j]
+                swapped = True
+        if not swapped:
+            return rslt
+    return rslt
 
 
-def bubble_sort3[T: SupportsLT](seq: Sequence[T]) -> list[T]:
+def bubble_sort3[T: SupportsLT](src: Sequence[T]) -> list[T]:
     """Sorting using the straight exchange sort."""
-    cp = list(deepcopy(seq))
-    end_index = len(cp) - 1
+    rslt = list(deepcopy(src))
+    end_index = len(rslt) - 1
 
     while end_index > 0:
         last_swap_index = 0
         for j in range(end_index):
-            if cp[j] > cp[j + 1]:
-                cp[j], cp[j + 1] = cp[j + 1], cp[j]
+            if rslt[j] > rslt[j + 1]:
+                rslt[j], rslt[j + 1] = rslt[j + 1], rslt[j]
                 last_swap_index = j
         end_index = last_swap_index
 
-    return cp
+    return rslt
 
 
-def shaker_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
+def shaker_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
     """Sorting using the bi-direction bubble sort."""
-    cp = list(deepcopy(seq))
-    left = 0
-    right = len(seq) - 1
+    rslt = list(deepcopy(src))
+    left, right = 0, len(src) - 1
+
     last = right
     while left < right:
         for i in range(right, left, -1):
-            if cp[i - 1] > cp[i]:
-                cp[i - 1], cp[i] = cp[i], cp[i - 1]
+            if rslt[i - 1] > rslt[i]:
+                rslt[i - 1], rslt[i] = rslt[i], rslt[i - 1]
                 last = i
         left = last
 
         for i in range(left, right):
-            if cp[i] > cp[i + 1]:
-                cp[i], cp[i + 1] = cp[i + 1], cp[i]
+            if rslt[i] > rslt[i + 1]:
+                rslt[i], rslt[i + 1] = rslt[i + 1], rslt[i]
                 last = i
         right = last
 
-    return cp
+    return rslt
 
 
-def selection_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
+def selection_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
     """Sorting using the straight selection sort."""
-    cp = list(deepcopy(seq))
-    for i in range(len(cp) - 1):
+    rslt = list(deepcopy(src))
+    for i in range(len(rslt) - 1):
         m = i
         # 最小の値を探す
-        for j in range(i + 1, len(cp)):
-            if cp[j] < cp[m]:
+        for j in range(i + 1, len(rslt)):
+            if rslt[j] < rslt[m]:
                 m = j
-        cp[i], cp[m] = cp[m], cp[i]
+        rslt[i], rslt[m] = rslt[m], rslt[i]
 
-    return cp
+    return rslt
 
 
-def shuttle_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
+def shuttle_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
     """Sorting using the straight insertion sort."""
-    cp = list(deepcopy(seq))
-    for i in range(1, len(cp)):
-        insert_value = cp[i]
+    rslt = list(deepcopy(src))
+    for i in range(1, len(rslt)):
+        insert_value = rslt[i]
 
         # right shift
         j = i
-        while j > 0 and insert_value < cp[j - 1]:
-            cp[j] = cp[j - 1]
+        while j > 0 and insert_value < rslt[j - 1]:
+            rslt[j] = rslt[j - 1]
             j -= 1
-        cp[j] = insert_value
+        rslt[j] = insert_value
 
-    return cp
+    return rslt
 
 
-def binary_insertion_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
+def binary_insertion_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
     """Sorting using the binary insertion sort."""
-    cp = list(deepcopy(seq))
-    for i in range(1, len(cp)):
-        key = cp[i]
+    rslt = list(deepcopy(src))
+    for i in range(1, len(rslt)):
+        key = rslt[i]
         left, right = 0, i
 
         # 目的列はソート済みなので二分探索が可能
         # 範囲は [left, right)
         while left < right:
             middle = (left + right) // 2
-            if key < cp[middle]:
+            if key < rslt[middle]:
                 right = middle
             else:
                 left = middle + 1
@@ -121,107 +121,114 @@ def binary_insertion_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
 
         # right shift
         for j in range(i, insert_position, -1):
-            cp[j] = cp[j - 1]
-        cp[insert_position] = key
+            rslt[j] = rslt[j - 1]
+        rslt[insert_position] = key
 
-    return cp
+    return rslt
 
 
 def binary_insertion_sort2[T: SupportsLT](
-    seq: Sequence[T],
+    src: Sequence[T],
 ) -> list[T]:
     """Sorting using the binary insertion sort."""
-    cp = list(deepcopy(seq))
-    for i in range(1, len(cp)):
-        bisect.insort(cp, cp.pop(i), 0, i)
-    return cp
+    rslt = list(deepcopy(src))
+    for i in range(1, len(rslt)):
+        bisect.insort(rslt, rslt.pop(i), 0, i)
+    return rslt
 
 
-def shell_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
+def shell_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
     """Sorting using the shell sort."""
-    cp = list(deepcopy(seq))
-    h = len(cp) // 2
+    rslt = list(deepcopy(src))
+    h = len(rslt) // 2
 
     while h > 0:
         # 配列の後半に注目する
-        for i in range(h, len(cp)):
+        for i in range(h, len(rslt)):
             # 基準となる添え字の相対的な距離から前半の添え字を算出
             j = i - h
 
             # ここ大体挿入ソートと一緒
-            insert_value = cp[i]
-            while j >= 0 and cp[j] > insert_value:
-                cp[j + h] = cp[j]
+            insert_value = rslt[i]
+            while j >= 0 and rslt[j] > insert_value:
+                rslt[j + h] = rslt[j]
                 j -= h
-            cp[j + h] = insert_value
+            rslt[j + h] = insert_value
 
         h //= 2
-    return cp
+    return rslt
 
 
-def shell_sort2[T: SupportsLT](seq: Sequence[T]) -> list[T]:
+def shell_sort2[T: SupportsLT](src: Sequence[T]) -> list[T]:
     """Sorting using the shell sort."""
     # 間隔を、121, 40, 13, 4, 1のように減らしていく。
     # 間隔が互いに倍数とならないようにすれば、要素が十分にかき混ぜられ、効率化が期待できる。
-    cp = list(deepcopy(seq))
-    h = (3 ** math.floor(math.log(2 * len(cp) - 1, 3)) - 1) // 2
+    rslt = list(deepcopy(src))
+    h = (3 ** math.floor(math.log(2 * len(rslt) - 1, 3)) - 1) // 2
 
     while h > 0:
-        for i in range(h, len(cp)):
+        for i in range(h, len(rslt)):
             j = i - h
-            insert_value = cp[i]
-            while j >= 0 and cp[j] > insert_value:
-                cp[j + h] = cp[j]
+            insert_value = rslt[i]
+            while j >= 0 and rslt[j] > insert_value:
+                rslt[j + h] = rslt[j]
                 j -= h
-            cp[j + h] = insert_value
+            rslt[j + h] = insert_value
         h //= 3
 
-    return cp
+    return rslt
 
 
-def partition_using_qsort[T: SupportsLT](seq: list[T]):
+def partition_using_qsort[T: SupportsLT](src: list[T]) -> None:
     left = 0
-    right = len(seq) - 1
-    mid = len(seq) // 2
+    right = len(src) - 1
+    pivot = len(src) // 2
 
     while left <= right:
-        while seq[left] < mid:
+        while src[left] < src[pivot]:
             left += 1
-        while seq[mid] < seq[right]:
+        while src[pivot] < src[right]:
             right -= 1
         if left <= right:
-            seq[left], seq[right] = seq[right], seq[left]
+            src[left], src[right] = src[right], src[left]
             left += 1
             right -= 1
 
-    print(seq)
-    print("A pivot: ", mid)
-    print("A group with values equal to or less than the pivot: ", seq[:left])
+    print(src)
+    print("A pivot: ", pivot)
+    print("A group with values equal to or less than the pivot: ", src[:left])
 
     if left > right + 1:
-        print("A group matching the pivot value: ", seq[right + 1 : left])
+        print("A group matching the pivot value: ", src[right + 1 : left])
 
-    print("A group with values equal to or greater than the pivot: ", seq[right + 1 :])
+    print("A group with values equal to or greater than the pivot: ", src[right + 1 :])
 
 
-def quick_sort_impl[T: SupportsLT](seq: list[T], start: int, end: int):
-    left, right = start, end
-    mid = (start + end) // 2
+def quick_sort_impl[T: SupportsLT](src: list[T], left: int, right: int) -> None:
+    pl, pr = left, right
+    pivot = src[(left + right) // 2]
 
-    while left <= right:
-        while seq[left] < seq[mid]:
-            left += 1
-        while seq[mid] < seq[right]:
-            right -= 1
-        if left <= right:
-            seq[left], seq[right] = seq[right], seq[left]
-            left += 1
-            right -= 1
+    while pl <= pr:
+        while src[pl] < pivot:
+            pl += 1
+        while pivot < src[pr]:
+            pr -= 1
+        if pl <= pr:
+            src[pl], src[pr] = src[pr], src[pl]
+            pl += 1
+            pr -= 1
 
-    if start < right:
-        quick_sort_impl(seq, start, left)
-    if left < end:
-        quick_sort_impl(seq, left, end)
+    if left < pr:
+        quick_sort_impl(src, left, pl)
+    if pl < right:
+        quick_sort_impl(src, pl, right)
+
+
+def quick_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
+    rslt = list(deepcopy(src))
+    quick_sort_impl(rslt, 0, len(rslt) - 1)
+    return rslt
+
 
 
 def quick_sort[T: SupportsLT](seq: Sequence[T]) -> list[T]:
