@@ -13,7 +13,7 @@ def partition_using_qsort[T: SupportsLT](src: list[T]) -> None:
     There are two methods of performing the partitioning:
     - Lomuto Partition Scheme
     - Hoare Partition Scheme
-    
+
     This function uses the Hoare Partition Scheme, which is more efficient and does not require additional space for a temporary array.
     """
     left = 0
@@ -39,3 +39,32 @@ def partition_using_qsort[T: SupportsLT](src: list[T]) -> None:
         print("A group matching the pivot value: ", src[right + 1 : left])
 
     print("A group with values equal to or greater than the pivot: ", src[right + 1 :])
+
+
+def quick_sort_impl[T: SupportsLT](src: list[T], left: int, right: int) -> None:
+    pl, pr = left, right
+    pivot = src[(left + right) // 2]
+
+    while pl <= pr:
+        while src[pl] < pivot:
+            pl += 1
+        while pivot < src[pr]:
+            pr -= 1
+        if pl <= pr:
+            src[pl], src[pr] = src[pr], src[pl]
+            pl += 1
+            pr -= 1
+
+    # 終了条件
+    if left < pr:
+        quick_sort_impl(src, left, pl)
+    if pl < right:
+        quick_sort_impl(src, pl, right)
+
+
+def quick_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
+    rslt = list(src)
+    quick_sort_impl(rslt, 0, len(rslt) - 1)
+    return rslt
+
+
