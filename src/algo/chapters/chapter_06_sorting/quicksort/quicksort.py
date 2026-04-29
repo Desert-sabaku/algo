@@ -68,3 +68,76 @@ def quick_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
     return rslt
 
 
+def quick_sort2[T: SupportsLT](src: Sequence[T], start: int, end: int) -> list[T]:
+    rslt = list(deepcopy(src))
+
+    def helper(src: list[T], left: int, right: int) -> T:
+        """Implementation of the median-of-three sort.
+        The pivot is placed at position `right-1`.
+        After partitioning the array, it is the caller's responsibility to return this pivot to its correct position.
+
+        Args:
+            src (list[T]): Input array
+            left (int): The index at the start of the array
+            right (int): The index at the end of the array
+
+        Returns:
+            T: The pivot
+        """
+        # left, mid, right の3箇所をソート
+        mid = left + (right - left) // 2
+
+        if src[left] > src[mid]:
+            src[left], src[mid] = src[mid], src[left]
+        if src[left] > src[right]:
+            src[left], src[right] = src[right], src[left]
+        if src[mid] > src[right]:
+            src[mid], src[right] = src[right], src[mid]
+
+        # left, ..., mid, right
+        # mid で必ず止まる。番兵として機能する。
+        src[mid], src[right - 1] = src[right - 1], src[mid]
+        return src[right - 1]
+
+    stack = [(start, end)]
+
+    while stack:
+        left, right = stack.pop()
+
+        # --- 三値の中央値の選択と配置 ---
+        pivot = helper(rslt, left, right)
+
+        # 走査範囲は left + 1 から right - 2
+        pl = left + 1
+        pr = right - 2
+
+        # --- 分割 ---
+        while True:
+            # rslt[left] が pivot_val 以下のため、pl は必ず止まる（番兵）
+            while rslt[pl] < pivot:
+                pl += 1
+            # rslt[right] が pivot_val 以上のため、pr は必ず止まる（番兵）
+            while pivot < rslt[pr]:
+                pr -= 1
+
+            if pl >= pr:
+                break
+            rslt[pl], rslt[pr] = rslt[pr], rslt[pl]
+            pl += 1
+            pr -= 1
+
+        # ピボットを正しい位置（pl）に戻す
+        rslt[pl], rslt[right - 1] = rslt[right - 1], rslt[pl]
+
+        # 分割後の範囲をスタックへ
+        if left < pl - 1:
+            stack.append((left, pl - 1))
+        if pl + 1 < right:
+            stack.append((pl + 1, right))
+
+    return rslt
+
+
+if __name__ == "__main__":
+    seq = [random.randint(0, 100) for _ in range(10)]
+    print(quick_sort2(seq, 0, len(seq) - 1))
