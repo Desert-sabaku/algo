@@ -1,5 +1,4 @@
 import random
-from copy import deepcopy
 from typing import Sequence
 
 from algo.chapters.core.supports_less_than import SupportsLT
@@ -69,7 +68,7 @@ def quick_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
 
 
 def quick_sort2[T: SupportsLT](src: Sequence[T], start: int, end: int) -> list[T]:
-    rslt = list(deepcopy(src))
+    rslt = list(src)
 
     def helper(src: list[T], left: int, right: int) -> T:
         """Implementation of the median-of-three sort.

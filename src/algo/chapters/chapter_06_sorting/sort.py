@@ -3,7 +3,6 @@
 import bisect
 import math
 import random
-from copy import deepcopy
 from typing import Sequence
 
 from algo.chapters.core.supports_less_than import SupportsLT
@@ -11,7 +10,7 @@ from algo.chapters.core.supports_less_than import SupportsLT
 
 def bubble_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
     """Sorting using the straight exchange sort"""
-    rslt = list(deepcopy(src))
+    rslt = list(src)
     for i in range(len(rslt)):
         for j in range(len(rslt) - i - 1):
             if rslt[j] > rslt[j + 1]:
@@ -21,7 +20,7 @@ def bubble_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
 
 def bubble_sort2[T: SupportsLT](src: Sequence[T]) -> list[T]:
     """Sorting using the straight exchange sort"""
-    rslt = list(deepcopy(src))
+    rslt = list(src)
     for i in range(len(rslt)):
         swapped = False
         for j in range(len(rslt) - i - 1):
@@ -35,7 +34,7 @@ def bubble_sort2[T: SupportsLT](src: Sequence[T]) -> list[T]:
 
 def bubble_sort3[T: SupportsLT](src: Sequence[T]) -> list[T]:
     """Sorting using the straight exchange sort."""
-    rslt = list(deepcopy(src))
+    rslt = list(src)
     end_index = len(rslt) - 1
 
     while end_index > 0:
@@ -51,7 +50,7 @@ def bubble_sort3[T: SupportsLT](src: Sequence[T]) -> list[T]:
 
 def shaker_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
     """Sorting using the bi-direction bubble sort."""
-    rslt = list(deepcopy(src))
+    rslt = list(src)
     left, right = 0, len(src) - 1
 
     last = right
@@ -73,7 +72,7 @@ def shaker_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
 
 def selection_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
     """Sorting using the straight selection sort."""
-    rslt = list(deepcopy(src))
+    rslt = list(src)
     for i in range(len(rslt) - 1):
         m = i
         # 最小の値を探す
@@ -103,7 +102,7 @@ def shuttle_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
 
 def binary_insertion_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
     """Sorting using the binary insertion sort."""
-    rslt = list(deepcopy(src))
+    rslt = list(src)
     for i in range(1, len(rslt)):
         key = rslt[i]
         left, right = 0, i
@@ -131,7 +130,7 @@ def binary_insertion_sort2[T: SupportsLT](
     src: Sequence[T],
 ) -> list[T]:
     """Sorting using the binary insertion sort."""
-    rslt = list(deepcopy(src))
+    rslt = list(src)
     for i in range(1, len(rslt)):
         bisect.insort(rslt, rslt.pop(i), 0, i)
     return rslt
@@ -139,7 +138,7 @@ def binary_insertion_sort2[T: SupportsLT](
 
 def shell_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
     """Sorting using the shell sort."""
-    rslt = list(deepcopy(src))
+    rslt = list(src)
     h = len(rslt) // 2
 
     while h > 0:
@@ -163,7 +162,7 @@ def shell_sort2[T: SupportsLT](src: Sequence[T]) -> list[T]:
     """Sorting using the shell sort."""
     # 間隔を、121, 40, 13, 4, 1のように減らしていく。
     # 間隔が互いに倍数とならないようにすれば、要素が十分にかき混ぜられ、効率化が期待できる。
-    rslt = list(deepcopy(src))
+    rslt = list(src)
     h = (3 ** math.floor(math.log(2 * len(rslt) - 1, 3)) - 1) // 2
 
     while h > 0:
@@ -179,34 +178,37 @@ def shell_sort2[T: SupportsLT](src: Sequence[T]) -> list[T]:
     return rslt
 
 
-def partition_using_qsort[T: SupportsLT](src: list[T]) -> None:
-    left = 0
-    right = len(src) - 1
-    pivot = len(src) // 2
+def merge_sort_impl[T: SupportsLT](src: list[T], left: int, right: int) -> None:
+    if left >= right:
+        return
 
-    while left <= right:
-        while src[left] < src[pivot]:
-            left += 1
-        while src[pivot] < src[right]:
-            right -= 1
-        if left <= right:
-            src[left], src[right] = src[right], src[left]
-            left += 1
-            right -= 1
+    middle = (left + right) // 2
+    merge_sort_impl(src, left, middle)
+    merge_sort_impl(src, middle + 1, right)
 
-    print(src)
-    print("A pivot: ", pivot)
-    print("A group with values equal to or less than the pivot: ", src[:left])
+    # --- マージ ---
+    i, j = left, middle + 1
+    tmp: list[T] = []
 
-    if left > right + 1:
-        print("A group matching the pivot value: ", src[right + 1 : left])
+    while i <= middle and j <= right:
+        if src[i] < src[j]:
+            tmp.append(src[i])
+            i += 1
+        else:
+            tmp.append(src[j])
+            j += 1
 
-    print("A group with values equal to or greater than the pivot: ", src[right + 1 :])
+    while i <= middle:
+        tmp.append(src[i])
+        i += 1
 
+    while j <= right:
+        tmp.append(src[j])
+        j += 1
 
-def quick_sort_impl[T: SupportsLT](src: list[T], left: int, right: int) -> None:
-    pl, pr = left, right
-    pivot = src[(left + right) // 2]
+    # ソートされた部分を src にコピー
+    for k in range(len(tmp)):
+        src[left + k] = tmp[k]
 
     while pl <= pr:
         while src[pl] < pivot:
@@ -292,16 +294,18 @@ def quick_sort2[T: SupportsLT](src: Sequence[T], start: int, end: int) -> list[T
 
 
 if __name__ == "__main__":
-    print(test := [random.randint(0, 60) for _ in range(100)])
+    print(test := [random.randint(0, 60) for _ in range(30)])
 
     # print(bubble_sort(test))
     # print(bubble_sort2(test))
     # print(bubble_sort3(test))
     # print(shaker_sort(test))
     # print(selection_sort(test))
-    # print(shuttle_sort(test))
+    # print(shuttle_sort(test, 0, len(test) - 1))
+    # print(test)
     # print(binary_insertion_sort(test))
     # print(shell_sort(test))
     # print(shell_sort2(test))
     # partition_using_qsort(test)
-    print(quick_sort2(test, 0, len(test) - 1))
+    # print(quick_sort2(test, 0, len(test) - 1))
+    # print(merge_sort(test) == sorted(test))
