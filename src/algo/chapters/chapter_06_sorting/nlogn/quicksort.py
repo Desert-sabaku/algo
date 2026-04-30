@@ -2,6 +2,7 @@ import random
 import unittest
 from typing import Sequence
 
+from algo.chapters.chapter_06_sorting.sort import shuttle_sort
 from algo.chapters.core.supports_less_than import SupportsLT
 
 
@@ -67,16 +68,6 @@ def quick_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
     return rslt
 
 
-def insertion_sort[T: SupportsLT](src: list[T], left: int, right: int) -> None:
-    for i in range(left + 1, right + 1):
-        temp = src[i]
-        j = i
-        while j > left and temp < src[j - 1]:
-            src[j] = src[j - 1]
-            j -= 1
-        src[j] = temp
-
-
 def quick_sort2[T: SupportsLT](
     src: Sequence[T], max_pertition_len: int = 10
 ) -> list[T]:
@@ -140,7 +131,7 @@ def quick_sort2[T: SupportsLT](
         left, right = stack.pop()
 
         if left - right < max_pertition_len:
-            insertion_sort(rslt, left, right)
+            shuttle_sort(rslt, left, right, is_inplace=True)
             continue
 
         pivot = partition(rslt, left, right)

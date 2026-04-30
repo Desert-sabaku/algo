@@ -3,7 +3,7 @@
 import bisect
 import math
 import random
-from typing import Sequence
+from typing import MutableSequence, Sequence
 
 from algo.chapters.core.supports_less_than import SupportsLT
 
@@ -84,15 +84,23 @@ def selection_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
     return rslt
 
 
-def shuttle_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
+def shuttle_sort[T: SupportsLT](
+    src: MutableSequence[T],
+    left: int = 0,
+    right: int | None = None,
+    is_inplace: bool = False,
+) -> MutableSequence[T]:
     """Sorting using the straight insertion sort."""
-    rslt = list(deepcopy(src))
-    for i in range(1, len(rslt)):
+    rslt = src if is_inplace else list(src)
+    if right is None:
+        right = len(rslt) - 1
+
+    for i in range(left + 1, right + 1):
         insert_value = rslt[i]
 
         # right shift
         j = i
-        while j > 0 and insert_value < rslt[j - 1]:
+        while j > left and insert_value < rslt[j - 1]:
             rslt[j] = rslt[j - 1]
             j -= 1
         rslt[j] = insert_value
