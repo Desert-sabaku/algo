@@ -1,4 +1,5 @@
 import random
+import unittest
 from typing import Sequence
 
 from algo.chapters.core.supports_less_than import SupportsLT
@@ -40,37 +41,46 @@ def partition_using_qsort[T: SupportsLT](src: list[T]) -> None:
     print("A group with values equal to or greater than the pivot: ", src[right + 1 :])
 
 
-def quick_sort_impl[T: SupportsLT](src: list[T], left: int, right: int) -> None:
-    pl, pr = left, right
-    pivot = src[(left + right) // 2]
-
-    while pl <= pr:
-        while src[pl] < pivot:
-            pl += 1
-        while pivot < src[pr]:
-            pr -= 1
-        if pl <= pr:
-            src[pl], src[pr] = src[pr], src[pl]
-            pl += 1
-            pr -= 1
-
-    # 終了条件
-    if left < pr:
-        quick_sort_impl(src, left, pl)
-    if pl < right:
-        quick_sort_impl(src, pl, right)
-
-
 def quick_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
+    def quick_sort_impl(src: list[T], left: int, right: int) -> None:
+        pl, pr = left, right
+        pivot = src[(left + right) // 2]
+
+        while pl <= pr:
+            while src[pl] < pivot:
+                pl += 1
+            while pivot < src[pr]:
+                pr -= 1
+            if pl <= pr:
+                src[pl], src[pr] = src[pr], src[pl]
+                pl += 1
+                pr -= 1
+
+        # 終了条件
+        if left < pr:
+            quick_sort_impl(src, left, pr)
+        if pl < right:
+            quick_sort_impl(src, pl, right)
+
     rslt = list(src)
     quick_sort_impl(rslt, 0, len(rslt) - 1)
     return rslt
 
 
-def quick_sort2[T: SupportsLT](src: Sequence[T], start: int, end: int) -> list[T]:
-    rslt = list(src)
+def insertion_sort[T: SupportsLT](src: list[T], left: int, right: int) -> None:
+    for i in range(left + 1, right + 1):
+        temp = src[i]
+        j = i
+        while j > left and temp < src[j - 1]:
+            src[j] = src[j - 1]
+            j -= 1
+        src[j] = temp
 
-    def helper(src: list[T], left: int, right: int) -> T:
+
+def quick_sort2[T: SupportsLT](
+    src: Sequence[T], max_pertition_len: int = 10
+) -> list[T]:
+    def median_of_three_partition(src: list[T], left: int, right: int) -> T:
         """Implementation of the median-of-three sort.
         The pivot is placed at position `right-1`.
         After partitioning the array, it is the caller's responsibility to return this pivot to its correct position.
@@ -93,18 +103,14 @@ def quick_sort2[T: SupportsLT](src: Sequence[T], start: int, end: int) -> list[T
         if src[mid] > src[right]:
             src[mid], src[right] = src[right], src[mid]
 
-        # left, ..., mid, right
+        # left, ..., pivot, right
         # mid で必ず止まる。番兵として機能する。
         src[mid], src[right - 1] = src[right - 1], src[mid]
         return src[right - 1]
 
-    stack = [(start, end)]
-
-    while stack:
-        left, right = stack.pop()
-
+    def partition(src: list[T], left: int, right: int) -> int:
         # --- 三値の中央値の選択と配置 ---
-        pivot = helper(rslt, left, right)
+        pivot = median_of_three_partition(src, left, right)
 
         # 走査範囲は left + 1 から right - 2
         pl = left + 1
@@ -113,30 +119,55 @@ def quick_sort2[T: SupportsLT](src: Sequence[T], start: int, end: int) -> list[T
         # --- 分割 ---
         while True:
             # rslt[left] が pivot_val 以下のため、pl は必ず止まる（番兵）
-            while rslt[pl] < pivot:
+            while src[pl] < pivot:
                 pl += 1
             # rslt[right] が pivot_val 以上のため、pr は必ず止まる（番兵）
-            while pivot < rslt[pr]:
+            while pivot < src[pr]:
                 pr -= 1
 
             if pl >= pr:
+                # ピボットを正しい位置（pl）に戻す
+                src[pl], src[right - 1] = src[right - 1], src[pl]
                 break
-            rslt[pl], rslt[pr] = rslt[pr], rslt[pl]
+            src[pl], src[pr] = src[pr], src[pl]
             pl += 1
             pr -= 1
+        return pl
 
-        # ピボットを正しい位置（pl）に戻す
-        rslt[pl], rslt[right - 1] = rslt[right - 1], rslt[pl]
+    rslt = list(src)
+    stack = [(0, len(rslt) - 1)]
+    while stack:
+        left, right = stack.pop()
 
+        if left - right < max_pertition_len:
+            insertion_sort(rslt, left, right)
+            continue
+
+        pivot = partition(rslt, left, right)
         # 分割後の範囲をスタックへ
-        if left < pl - 1:
-            stack.append((left, pl - 1))
-        if pl + 1 < right:
-            stack.append((pl + 1, right))
+        # デカい方の方が先に処理されるように、スタックへ入れる順番を工夫
+        if (pivot - left) > (right - pivot):
+            stack.append((left, pivot - 1))
+            stack.append((pivot + 1, right))
+        else:
+            stack.append((pivot + 1, right))
+            stack.append((left, pivot - 1))
 
     return rslt
 
 
+# ==Unit Test==
+
+
+class TestQuickSort(unittest.TestCase):
+    def test_quick_sort(self):
+        src = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3]
+        self.assertEqual(quick_sort(src), sorted(src))
+
+    def test_quick_sort2(self):
+        src = random.sample(range(100), 30)
+        self.assertEqual(quick_sort2(src), sorted(src))
+
+
 if __name__ == "__main__":
-    seq = [random.randint(0, 100) for _ in range(10)]
-    print(quick_sort2(seq, 0, len(seq) - 1))
+    unittest.main()
