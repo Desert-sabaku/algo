@@ -6,13 +6,6 @@ readme = "README.md"
 requires-python = ">=3.14"
 version = "0.1.0"
 
-[tool.mypy]
-explicit_package_bases = true
-files = ["src/algo", "main.py"]
-mypy_path = ["src"]
-python_version = "3.14"
-strict = true
-
 [tool.ruff]
 line-length = 100
 src = ["src"]
@@ -46,8 +39,8 @@ extraPaths = ["src"]
 
 [dependency-groups]
 dev = [
-  "mypy>=1.19.1",
   "pre-commit>=4.3.0",
+  "pyright>=1.1",
   "pytest>=8.3.5",
   "pytest-cov>=6.1.0",
   "ruff>=0.15.4",

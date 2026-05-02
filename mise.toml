@@ -1,9 +1,9 @@
 [tools]
 python = "3.14"
 
-[tasks.mypy]
-description = "Run mypy type checking (same target as CI)"
-run = "uv run mypy $(git ls-files '*.py')"
+[tasks.pyright]
+description = "Run pyright type checking"
+run = "uv run pyright"
 
 [tasks.ruff]
 description = "Run ruff format check and lint (same target as CI)"
@@ -17,5 +17,5 @@ description = "Run pytest with coverage"
 run = "uv run pytest --tb=short --cov --cov-report=term-missing"
 
 [tasks.ci-local]
-depends = ["ruff", "mypy", "test"]
+depends = ["ruff", "pyright", "test"]
 description = "Run local CI-equivalent checks"
