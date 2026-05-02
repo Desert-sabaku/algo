@@ -1,6 +1,6 @@
 repos:
     - repo: https://github.com/astral-sh/ruff-pre-commit
-      rev: v0.15.4
+      rev: v0.15.5
       hooks:
           - id: ruff-check
             args: [--fix]
@@ -14,13 +14,9 @@ repos:
 
     - repo: local
       hooks:
-          - id: mypy
-            name: mypy
-            entry: sh -c "uv run mypy $(git ls-files '*.py')"
+          - id: pyright
+            name: pyright
+            entry: uv run pyright
             language: system
             pass_filenames: false
-          - id: pylint
-            name: pylint
-            entry: sh -c "uv run pylint $(git ls-files '*.py')"
-            language: system
-            pass_filenames: false
+            types: [python]
