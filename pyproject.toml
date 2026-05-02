@@ -6,19 +6,6 @@ readme = "README.md"
 requires-python = ">=3.14"
 version = "0.1.0"
 
-[tool.pylint.format]
-max-line-length = 100
-
-[tool.pylint.main]
-source-roots = ["src"]
-
-[tool.mypy]
-explicit_package_bases = true
-files = ["src/algo", "main.py"]
-mypy_path = ["src"]
-python_version = "3.14"
-strict = true
-
 [tool.ruff]
 line-length = 100
 src = ["src"]
@@ -26,12 +13,35 @@ target-version = "py314"
 
 [tool.ruff.lint]
 ignore = ["E501"]
-select = ["E", "F", "I"]
+select = ["E", "F", "I", "PL"]
+
+[tool.ruff.lint.extend-per-file-ignores]
+"tests/**/*.py" = ["S101"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--tb=short"
+
+[tool.coverage.run]
+source = ["src"]
+
+[tool.coverage.report]
+show_missing = true
+
+[tool.pyright]
+include = ["src", "main.py"]
+exclude = ["**/__pycache__", ".venv", "build", "dist"]
+typeCheckingMode = "strict"
+venvPath = "."
+venv = ".venv"
+pythonVersion = "3.14"
+extraPaths = ["src"]
 
 [dependency-groups]
 dev = [
-  "mypy>=1.19.1",
   "pre-commit>=4.3.0",
-  "pylint>=4.0.5",
+  "pyright>=1.1",
+  "pytest>=8.3.5",
+  "pytest-cov>=6.1.0",
   "ruff>=0.15.4",
 ]
