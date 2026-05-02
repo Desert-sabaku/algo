@@ -34,14 +34,14 @@ Run CI-equivalent checks via custom commands (`mise`):
 
 ```bash
 mise run ruff
-mise run mypy
+mise run pyright
 mise run test
 mise run ci-local
 ```
 
 Static analysis configuration is committed in project files:
 
-- `pyproject.toml` for `mypy`, `ruff`, `pyright`, `pytest`, and `coverage`
+- `pyproject.toml` for `ruff`, `pyright`, `pytest`, and `coverage`
 
 This keeps import resolution and strictness consistent across environments and editors.
 
@@ -51,7 +51,7 @@ Run pre-commit for all files:
 uv run pre-commit run --all-files
 ```
 
-Current pre-commit hooks run `ruff`, and `mypy` checks (plus whitespace/newline fixes).
+Current pre-commit hooks run `ruff`, and `pyright` checks (plus whitespace/newline fixes).
 
 ## Running Tests
 
