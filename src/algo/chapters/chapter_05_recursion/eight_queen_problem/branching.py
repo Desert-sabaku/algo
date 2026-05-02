@@ -9,7 +9,7 @@ def set_position(column_index: int) -> None:
     """Arrange the queens in i-th column."""
     for row_index in range(COLUMN_COUNT):
         POSITION[column_index] = row_index
-        if column_index != 7:
+        if column_index != 7:  # noqa: PLR2004
             set_position(column_index + 1)
         else:
             print(*POSITION)

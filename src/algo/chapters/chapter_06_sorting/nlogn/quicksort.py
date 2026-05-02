@@ -68,9 +68,7 @@ def quick_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
     return rslt
 
 
-def quick_sort2[T: SupportsLT](
-    src: Sequence[T], max_pertition_len: int = 10
-) -> list[T]:
+def quick_sort2[T: SupportsLT](src: Sequence[T], max_partition_len: int = 10) -> list[T]:
     def median_of_three_partition(src: list[T], left: int, right: int) -> T:
         """Implementation of the median-of-three sort.
         The pivot is placed at position `right-1`.
@@ -130,7 +128,7 @@ def quick_sort2[T: SupportsLT](
     while stack:
         left, right = stack.pop()
 
-        if left - right < max_pertition_len:
+        if left - right < max_partition_len:
             shuttle_sort(rslt, left, right, is_inplace=True)
             continue
 
