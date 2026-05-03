@@ -8,7 +8,7 @@ from typing import Sequence
 from algo.chapters.core.supports_less_than import SupportsLT
 
 
-def sift_down(src: list[int], lo: int, hi: int):
+def sift_down(src: list[int], lo: int, hi: int) -> None:
     """A function that corrects a heap with incorrect root values by repositioning it to the correct locations
 
     Args:
@@ -21,9 +21,9 @@ def sift_down(src: list[int], lo: int, hi: int):
 
     parent = lo
     # `parent`に少なくとも左子が存在するなら
-    while parent < (hi + 1) // 2:
+    while parent < (hi + lo + 1) // 2:
         # 左右の子を比較し大きい方を取得
-        lc = parent * 2 + 1
+        lc = 2*parent - lo + 1
         rc = lc + 1
         ## 右が存在し左より大きければ右を、さもなくば左を
         flag = rc <= hi and src[rc] > src[lc]
