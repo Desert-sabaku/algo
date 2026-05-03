@@ -23,7 +23,7 @@ def sift_down(src: list[int], lo: int, hi: int) -> None:
     # `parent`に少なくとも左子が存在するなら
     while parent < (hi + lo + 1) // 2:
         # 左右の子を比較し大きい方を取得
-        lc = 2*parent - lo + 1
+        lc = 2 * parent - lo + 1
         rc = lc + 1
         ## 右が存在し左より大きければ右を、さもなくば左を
         flag = rc <= hi and src[rc] > src[lc]
@@ -125,17 +125,23 @@ class TestSiftDown(unittest.TestCase):
 
 
 class TestHeapSort(unittest.TestCase):
-    def test_base_case(self):
+    """Tests for the heap_sort function."""
+
+    def test_base_case(self) -> None:
+        """Verify heap_sort produces a correctly sorted result for a random list."""
         src = [random.randint(0, 100) for _ in range(100)]
         self.assertEqual(heap_sort(src), sorted(src))
 
-    def test_empty_list(self):
+    def test_empty_list(self) -> None:
+        """Verify heap_sort handles an empty list."""
         self.assertEqual(heap_sort([]), [])
 
-    def test_single_element(self):
+    def test_single_element(self) -> None:
+        """Verify heap_sort handles a single-element list."""
         self.assertEqual(heap_sort([42]), [42])
 
-    def test_duplicates(self):
+    def test_duplicates(self) -> None:
+        """Verify heap_sort correctly handles duplicate values."""
         self.assertEqual(heap_sort([3, 1, 3, 2, 1]), [1, 1, 2, 3, 3])
 
 

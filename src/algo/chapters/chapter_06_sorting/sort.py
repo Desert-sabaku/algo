@@ -19,7 +19,12 @@ def bubble_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
 
 
 def bubble_sort2[T: SupportsLT](src: Sequence[T]) -> list[T]:
-    """Sorting using the straight exchange sort"""
+    """Sort using bubble sort with early-exit optimisation.
+
+    Identical to :func:`bubble_sort` but terminates as soon as a full pass
+    completes without any swaps, indicating the sequence is already sorted.
+    Best-case time complexity is O(n).
+    """
     rslt = list(src)
     for i in range(len(rslt)):
         swapped = False
@@ -33,7 +38,12 @@ def bubble_sort2[T: SupportsLT](src: Sequence[T]) -> list[T]:
 
 
 def bubble_sort3[T: SupportsLT](src: Sequence[T]) -> list[T]:
-    """Sorting using the straight exchange sort."""
+    """Sort using bubble sort that tracks the last-swap boundary.
+
+    After each pass, the next pass ends at the index of the last swap rather
+    than shrinking the boundary by exactly one.  This can skip large already-
+    sorted suffixes and reduces the number of comparisons in practice.
+    """
     rslt = list(src)
     end_index = len(rslt) - 1
 
@@ -167,9 +177,14 @@ def shell_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
 
 
 def shell_sort2[T: SupportsLT](src: Sequence[T]) -> list[T]:
-    """Sorting using the shell sort."""
-    # 間隔を、121, 40, 13, 4, 1のように減らしていく。
-    # 間隔が互いに倍数とならないようにすれば、要素が十分にかき混ぜられ、効率化が期待できる。
+    """Sort using Shell sort with the Knuth gap sequence.
+
+    Uses the gap sequence h = (3^k − 1) / 2  (i.e. 1, 4, 13, 40, 121, …),
+    which Knuth showed gives O(n^(3/2)) comparisons.  Because consecutive gaps
+    are never multiples of each other the elements are well-shuffled between
+    passes, making this variant faster than the halving-gap variant
+    (:func:`shell_sort`) in practice.
+    """
     rslt = list(src)
     h = (3 ** math.floor(math.log(2 * len(rslt) - 1, 3)) - 1) // 2
 

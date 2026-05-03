@@ -1,3 +1,5 @@
+"""Counting sort implementation and tests."""
+
 import random
 import unittest
 from collections import Counter

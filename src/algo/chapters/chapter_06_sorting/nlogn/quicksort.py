@@ -1,3 +1,5 @@
+"""Quicksort implementations and tests."""
+
 import random
 import unittest
 from typing import Sequence
@@ -43,7 +45,20 @@ def partition_using_qsort[T: SupportsLT](src: list[T]) -> None:
 
 
 def quick_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
+    """Return a new list sorted in ascending order using recursive quicksort.
+
+    Uses the Hoare partition scheme with a middle-element pivot.
+    Average time complexity is O(n log n); worst case is O(n²).
+
+    Args:
+        src: Input sequence to sort.
+
+    Returns:
+        A new sorted list containing all elements of ``src``.
+    """
+
     def quick_sort_impl(src: list[T], left: int, right: int) -> None:
+        """Recursively sort ``src[left:right+1]`` in-place."""
         pl, pr = left, right
         pivot = src[(left + right) // 2]
 
@@ -69,6 +84,28 @@ def quick_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
 
 
 def quick_sort2[T: SupportsLT](src: Sequence[T], max_partition_len: int = 10) -> list[T]:
+    """Return a new list sorted using an iterative, optimised quicksort.
+
+    Uses three improvements over the basic quicksort:
+
+    1. **Median-of-three pivot selection** – reduces the probability of O(n²)
+       behaviour on already-sorted or reverse-sorted input.
+    2. **Insertion sort for small partitions** – partitions shorter than
+       ``max_partition_len`` are handled by :func:`shuttle_sort`, which is
+       faster for nearly-sorted data.
+    3. **Larger partition first** – the larger sub-array is pushed onto the
+       stack last so that the smaller sub-array is processed first, keeping
+       the maximum stack depth at O(log n).
+
+    Args:
+        src: Input sequence to sort.
+        max_partition_len: Partitions with fewer than this many elements are
+            sorted with insertion sort instead of recursing further.
+
+    Returns:
+        A new sorted list containing all elements of ``src``.
+    """
+
     def median_of_three_partition(src: list[T], left: int, right: int) -> T:
         """Implementation of the median-of-three sort.
         The pivot is placed at position `right-1`.
@@ -98,6 +135,20 @@ def quick_sort2[T: SupportsLT](src: Sequence[T], max_partition_len: int = 10) ->
         return src[right - 1]
 
     def partition(src: list[T], left: int, right: int) -> int:
+        """Partition ``src[left:right+1]`` around a median-of-three pivot.
+
+        Calls :func:`median_of_three_partition` to select and place the pivot
+        at ``right-1``, then uses two-pointer scanning to move smaller elements
+        to the left and larger elements to the right of the pivot.
+
+        Args:
+            src: The list being sorted (mutated in-place).
+            left: Inclusive left boundary of the sub-array.
+            right: Inclusive right boundary of the sub-array.
+
+        Returns:
+            The final index of the pivot after partitioning.
+        """
         # --- 三値の中央値の選択と配置 ---
         pivot = median_of_three_partition(src, left, right)
 
@@ -149,11 +200,15 @@ def quick_sort2[T: SupportsLT](src: Sequence[T], max_partition_len: int = 10) ->
 
 
 class TestQuickSort(unittest.TestCase):
-    def test_quick_sort(self):
+    """Tests for quick_sort and quick_sort2."""
+
+    def test_quick_sort(self) -> None:
+        """Verify quick_sort produces a correctly sorted result."""
         src = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3]
         self.assertEqual(quick_sort(src), sorted(src))
 
-    def test_quick_sort2(self):
+    def test_quick_sort2(self) -> None:
+        """Verify quick_sort2 produces a correctly sorted result."""
         src = random.sample(range(100), 30)
         self.assertEqual(quick_sort2(src), sorted(src))
 
