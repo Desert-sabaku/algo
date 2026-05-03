@@ -13,7 +13,15 @@ def counting_sort(src: Sequence[int]) -> list[int]:
 
     Returns:
         list[int]: A new list with sorted elements.
+
+    Raises:
+        ValueError: If any element is negative.
     """
+
+    if not src:
+        return []
+    if min(src) < 0:
+        raise ValueError("counting sort requires non-negative integers.")
 
     table = [0] * (max(src) + 1)
     rslt = [0] * len(src)
