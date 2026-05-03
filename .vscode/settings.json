@@ -16,6 +16,7 @@
         "newpassword",
         "organise",
         "platformdirs",
+        "postconditions",
         "pycache",
         "pylint",
         "pyproject",

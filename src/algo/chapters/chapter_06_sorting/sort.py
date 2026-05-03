@@ -186,6 +186,8 @@ def shell_sort2[T: SupportsLT](src: Sequence[T]) -> list[T]:
     (:func:`shell_sort`) in practice.
     """
     rslt = list(src)
+    if len(rslt) < 2:  # noqa: PLR2004
+        return rslt
     h = (3 ** math.floor(math.log(2 * len(rslt) - 1, 3)) - 1) // 2
 
     while h > 0:

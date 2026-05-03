@@ -79,6 +79,8 @@ def quick_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
             quick_sort_impl(src, pl, right)
 
     rslt = list(src)
+    if len(rslt) < 2:  # noqa: PLR2004
+        return rslt
     quick_sort_impl(rslt, 0, len(rslt) - 1)
     return rslt
 
@@ -179,7 +181,7 @@ def quick_sort2[T: SupportsLT](src: Sequence[T], max_partition_len: int = 10) ->
     while stack:
         left, right = stack.pop()
 
-        if left - right < max_partition_len:
+        if left - right + 1 < max_partition_len:
             shuttle_sort(rslt, left, right, is_inplace=True)
             continue
 
