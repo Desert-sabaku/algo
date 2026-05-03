@@ -32,21 +32,3 @@ class Node[KEY: Hashable, VALUE]:
     def key(self) -> KEY:
         """Read-only key."""
         return self._key
-
-
-if __name__ == "__main__":
-    node = Node[int, str](2, "Hello", None)
-    assert node.key == 2
-
-    node.value = "World"
-    assert node.value == "World"
-
-    node.next_node = Node[int, str](3, "!", None)
-    assert node.next_node.key == 3
-
-    try:
-        node.key = 10  # type: ignore[misc]
-    except AttributeError:
-        pass
-
-    print("All checks passed.")

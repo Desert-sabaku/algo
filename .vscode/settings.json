@@ -10,12 +10,18 @@
     "cSpell.words": [
         "Analysing",
         "docstrings",
-        "pylint",
-        "pyproject",
-        "venv",
+        "Hoare",
+        "Lomuto",
         "Mypy",
         "newpassword",
         "organise",
-        "platformdirs"
+        "platformdirs",
+        "postconditions",
+        "pycache",
+        "pylint",
+        "pyproject",
+        "pytest",
+        "rslt",
+        "venv"
     ]
 }

@@ -5,7 +5,7 @@ BASE_DIGITS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 def convert_base(num: int, radix: int) -> str:
     """Return the string representation of num in the given radix."""
-    if radix < 2 or radix > len(BASE_DIGITS):
+    if radix < 2 or radix > len(BASE_DIGITS):  # noqa: PLR2004
         raise ValueError(f"radix must be between 2 and {len(BASE_DIGITS)}")
     if num == 0:
         return "0"
