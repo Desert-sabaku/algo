@@ -40,12 +40,12 @@ def sift_down(src: list[int], lo: int, hi: int):
 
 def heap_sort[T: SupportsLT](src: Sequence[T]) -> list[T]:
     """Return a new list sorted in ascending order using heap sort."""
-    rslt = list(src)
-    heapq.heapify(rslt)
+    heap = list(src)
+    heapq.heapify(heap)
 
     rslt: list[T] = []
-    while rslt:
-        rslt.append(heapq.heappop(rslt))
+    while heap:
+        rslt.append(heapq.heappop(heap))
 
     return rslt
 
