@@ -1,15 +1,20 @@
 """Finds all divisor pairs of a given area."""
 
-area = int(input("Enter the area of the square: "))
-if area <= 0:
-    raise ValueError("Area must be a positive integer.")
+
+def divisors(area: int) -> list[tuple[int, int]]:
+    """Return all divisor pairs (i, area // i) for the given positive area."""
+    if area <= 0:
+        raise ValueError("Area must be a positive integer.")
+    result: list[tuple[int, int]] = []
+    for i in range(1, area + 1):
+        if i * i > area:
+            break
+        if area % i == 0:
+            result.append((i, area // i))
+    return result
 
 
-for i in range(1, area + 1):
-    if i * i > area:
-        break
-    if area % i:
-        # areaがiで割り切れないときは、iは正方形の辺の長さにならないので、次のループへ
-        continue
-    # areaがiで割り切れるとき、iはareaの約数。下でfloor divisionを使っているのは単に表記のため。
-    print(f"{i} x {area // i} = {area}")
+if __name__ == "__main__":
+    area = int(input("Enter the area of the square: "))
+    for a, b in divisors(area):
+        print(f"{a} x {b} = {area}")
