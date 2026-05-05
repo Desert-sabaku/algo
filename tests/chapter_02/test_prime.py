@@ -1,7 +1,5 @@
 """Tests for prime-finding algorithms in prime.py."""
 
-import pytest
-
 from algo.chapters.chapter_02_complexity_primes.prime import prime1, prime2, prime3
 
 PRIMES_UP_TO_30 = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]

@@ -1,7 +1,6 @@
 """Tests for all sort functions in sort.py using parametrize."""
 
 from collections.abc import Callable, Sequence
-from typing import Any
 
 import pytest
 
