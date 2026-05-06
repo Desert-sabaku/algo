@@ -19,7 +19,7 @@ def _hanoi(disk_count: int, src_axis: int, dst_axis: int) -> list[DiskInfo]:
 def move(disk_count: int, src_axis: int, dst_axis: int) -> list[DiskInfo]:
     """Return the order of move to solve the tower of Hanoi."""
     if disk_count <= 1:
-        raise ValueError("disk_count must be >= 2.")
+        raise ValueError("disk_count must be at least 2.")
     if src_axis not in (1, 2, 3) or dst_axis not in (1, 2, 3) or src_axis == dst_axis:
         raise ValueError("src_axis and dst_axis must be different values in {1, 2, 3}.")
     return _hanoi(disk_count, src_axis, dst_axis)

@@ -34,7 +34,7 @@ def test_two_disks_sequence() -> None:
 
 
 def test_disk_count_one_raises() -> None:
-    """disk_count=1 raises ValueError (due to <=1 guard)."""
+    """disk_count=1 raises ValueError as minimum is 2."""
     with pytest.raises(ValueError):
         move(1, 1, 3)
 
