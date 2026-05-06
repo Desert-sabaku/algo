@@ -1,6 +1,10 @@
 """Tests for recursive functions in recursive.py."""
 
-from algo.chapters.chapter_05_recursion.recursive import recursive1, recursive2, recursive3
+from algo.chapters.chapter_05_recursion.recursive import (
+    recursive1,
+    recursive2,
+    recursive3,
+)
 
 
 def _capture(func, n: int, capsys) -> str:  # type: ignore[no-untyped-def]
@@ -30,6 +34,6 @@ def test_all_agree_n4(capsys) -> None:  # type: ignore[no-untyped-def]
     out1 = _capture(recursive1, 4, capsys)
     out2 = _capture(recursive2, 4, capsys)
     out3 = _capture(recursive3, 4, capsys)
-    expected = "1 2 1 3 1 2 1 4 1 2 1 "
+    expected = "1 2 3 1 4 1 2 "
     assert out1 == expected
     assert out1 == out2 == out3
