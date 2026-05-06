@@ -1,19 +1,23 @@
 """Prints cumulative sum from a to b with formatted output."""
 
-print("sum from a to b")
-a = int(input("integer: "))
-b = int(input("integer: "))
 
-if a > b:
-    a, b = b, a
+def cumulative_sum(a: int, b: int) -> int:
+    """Return the sum of all integers from a to b inclusive."""
+    if a > b:
+        a, b = b, a
+    return sum(range(a, b + 1))
 
-# これすごい無駄な処理ですよね。=は最後だけなんだから毎回の判別必要はないんですよ。
-total = 0
-for i in range(a, b + 1):
-    if i < b:
-        print(f"{i} + ", end="")
-    else:
-        print(f"{i} = ", end="")
-    total += i
 
-print(total)
+if __name__ == "__main__":
+    _a = int(input("integer: "))
+    _b = int(input("integer: "))
+    if _a > _b:
+        _a, _b = _b, _a
+    total = 0
+    for i in range(_a, _b + 1):
+        if i < _b:
+            print(f"{i} + ", end="")
+        else:
+            print(f"{i} = ", end="")
+        total += i
+    print(total)
