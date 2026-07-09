@@ -2,12 +2,12 @@
 
 import math
 
-from numerical_analysis.differential_equation.runge_kutta_method import generateSolver
+from numerical_analysis.differential_equation.runge_kutta_method import generate_solver
 
 
 def test_rk4_solver_matches_exp_decay() -> None:
     """RK4 remains close to the analytical y(t)=e^(-t) for dy/dt=-y."""
-    points = list(generateSolver(lambda _t, y: -y, 0.0, 1.0, 0.3, h=0.1))
+    points = list(generate_solver(lambda _t, y: -y, 0.0, 1.0, 0.3, h=0.1))
 
     assert len(points) == 3
     assert points[0][0] == 0.1
