@@ -1,5 +1,7 @@
 [project]
-dependencies = []
+dependencies = [
+    "matplotlib>=3.11.0",
+]
 description = "algorithms and data structures practice"
 name = "algo"
 readme = "README.md"
