@@ -4,7 +4,9 @@ from typing import Callable, TypeAlias
 Fn: TypeAlias = Callable[[float, float], float]
 
 
-def generateSolver(fn: Fn, t: float, y: float, t_max: float, h: float = 0.1) -> Generator[tuple[float, float], None, None]:
+def generateSolver(
+    fn: Fn, t: float, y: float, t_max: float, h: float = 0.1
+) -> Generator[tuple[float, float], None, None]:
     """Generate forward Euler solution pairs (t, y) for dy/dt = fn(t, y) from t to t_max."""
     while t < t_max:
         gradient = fn(t, y)
