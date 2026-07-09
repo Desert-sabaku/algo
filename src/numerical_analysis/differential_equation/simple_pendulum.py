@@ -40,7 +40,7 @@ def analytical_theta(time: float, theta0: float, g: float, length: float) -> flo
     return theta0 * math.cos(math.sqrt(g / length) * time)
 
 
-def pendulum_states(
+def pendulum_states(  # noqa: PLR0913
     fn: Callable[[float, float, float, float], tuple[float, float]],
     theta: float,
     omega: float,
@@ -107,7 +107,7 @@ def main():
 
     output_path = Path("notes/numerical/differential_equation/simple_pendulum.png")
     plt.tight_layout()
-    output_path.parent.mkdir(parents=True, exist_ok=True)  
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output_path)
     print(f"saved plot to {output_path}")
 
