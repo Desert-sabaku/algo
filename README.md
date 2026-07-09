@@ -83,7 +83,14 @@ src/
 			chapter_04_stacks_queues/
 			chapter_05_recursion/
 			chapter_06_sorting/
+	numerical_analysis/
+		differential_equation/
 tests/
+	chapters/
+		chapter_01/
+		...
+	numerical_analysis/
+		differential_equation/
 notes/
 	chapters/
 		chapter_05_recursion/
@@ -91,6 +98,7 @@ main.py
 ```
 
 - Place all executable practice code under `src/algo/chapters/`.
+- Place numerical-analysis implementations under `src/numerical_analysis/`.
 - Keep non-code chapter material (notes, diagrams, references) under `notes/`.
 - Add new chapters as `chapter_XX_topic` to preserve natural ordering and readability.
 
