@@ -1,17 +1,21 @@
+from collections.abc import Generator
 from typing import Callable, TypeAlias
 
-fn: TypeAlias = Callable[[float, float], float]
+Fn: TypeAlias = Callable[[float, float], float]
 
 
-def generateSolver(fn: fn, t: float, y: float, max: float, h: float = 0.1):
-    while t < max:
+def generateSolver(
+    fn: Fn, t: float, y: float, t_max: float, h: float = 0.1
+) -> Generator[tuple[float, float], None, None]:
+    """Generate RK4 solution pairs (t, y) for dy/dt = fn(t, y) from t to t_max."""
+    while t < t_max:
         k1 = fn(t, y)
         k2 = fn(t + h / 2, y + h * k1 / 2)
         k3 = fn(t + h / 2, y + h * k2 / 2)
         k4 = fn(t + h, y + h * k3)
         y = y + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4)
-        yield t, y
         t += h
+        yield t, y
 
 
 def main():

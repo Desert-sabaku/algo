@@ -16,6 +16,7 @@
 # これで，各々の微分方程式を解く．
 
 import math
+from collections.abc import Generator
 from pathlib import Path
 from typing import Callable
 
@@ -46,7 +47,7 @@ def pendulum_states(
     g: float,
     length: float,
     end_time: float,
-):
+) -> Generator[tuple[float, float, float], None, None]:
     """Yield pendulum states computed with RK4."""
 
     time = 0.0
@@ -106,6 +107,7 @@ def main():
 
     output_path = Path("notes/numerical/differential_equation/simple_pendulum.png")
     plt.tight_layout()
+    output_path.parent.mkdir(parents=True, exist_ok=True)  
     plt.savefig(output_path)
     print(f"saved plot to {output_path}")
 

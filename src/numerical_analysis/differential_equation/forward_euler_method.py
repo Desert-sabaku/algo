@@ -1,14 +1,16 @@
+from collections.abc import Generator
 from typing import Callable, TypeAlias
 
-fn: TypeAlias = Callable[[float, float], float]
+Fn: TypeAlias = Callable[[float, float], float]
 
 
-def generateSolver(fn: fn, t: float, y: float, max: float, h: float = 0.1):
-    while t < max:
+def generateSolver(fn: Fn, t: float, y: float, t_max: float, h: float = 0.1) -> Generator[tuple[float, float], None, None]:
+    """Generate forward Euler solution pairs (t, y) for dy/dt = fn(t, y) from t to t_max."""
+    while t < t_max:
         gradient = fn(t, y)
         y = y + h * gradient
-        yield t, y
         t += h
+        yield t, y
 
 
 def main():
