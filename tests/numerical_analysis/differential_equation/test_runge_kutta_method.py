@@ -1,30 +1,13 @@
 """Tests for RK4 solver module."""
 
-import importlib.util
 import math
-from pathlib import Path
 
-
-def _load_runge_kutta_module():
-    module_path = (
-        Path(__file__).resolve().parents[3]
-        / "src"
-        / "numerical_analysis"
-        / "differential_equation"
-        / "Runge-Kutta_method.py"
-    )
-    spec = importlib.util.spec_from_file_location("runge_kutta_method", module_path)
-    assert spec is not None
-    assert spec.loader is not None
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+from numerical_analysis.differential_equation.runge_kutta_method import generateSolver
 
 
 def test_rk4_solver_matches_exp_decay() -> None:
     """RK4 remains close to the analytical y(t)=e^(-t) for dy/dt=-y."""
-    module = _load_runge_kutta_module()
-    points = list(module.generateSolver(lambda _t, y: -y, 0.0, 1.0, 0.3, h=0.1))
+    points = list(generateSolver(lambda _t, y: -y, 0.0, 1.0, 0.3, h=0.1))
 
     assert len(points) == 3
     assert points[0][0] == 0.1
