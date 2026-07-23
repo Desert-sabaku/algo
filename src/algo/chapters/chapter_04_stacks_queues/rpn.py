@@ -4,7 +4,6 @@ def main():
     stack: list[str] = []
 
     for c in expression:
-        print(stack)
         match c:
             case c if c.isdigit():
                 postfix.append(c)
@@ -18,10 +17,8 @@ def main():
                 stack.append(c)
             case _:
                 raise ValueError(f"Invalid character: {c}")
-                break
-    else:
-        if stack:
-            postfix.append(stack.pop())
+    postfix.extend(stack[::-1])
+    stack.clear()
 
     return postfix
 
