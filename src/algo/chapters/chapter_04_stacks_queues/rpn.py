@@ -1,10 +1,16 @@
 def main():
-    expression = "3+3^2*2"
+    expression = "(3+3)^2*2"
     postfix: list[str] = []
     stack: list[str] = []
 
     for c in expression:
         match c:
+            case c if c == "(":
+                stack.append(c)
+            case c if c == ")":
+                while stack and stack[-1] != "(":
+                    postfix.append(stack.pop())
+                stack.pop()
             case c if c.isdigit():
                 postfix.append(c)
             case c if c in "+-":
