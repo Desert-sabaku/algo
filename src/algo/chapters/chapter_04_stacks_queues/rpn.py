@@ -1,5 +1,5 @@
 def main():
-    expression = "5+4*4-2*4%3/1"
+    expression = "3+3^2*2"
     postfix: list[str] = []
     stack: list[str] = []
 
@@ -14,6 +14,8 @@ def main():
             case c if c in "*/%":
                 while stack and stack[-1] in "*/%^":
                     postfix.append(stack.pop())
+                stack.append(c)
+            case c if c == "^":
                 stack.append(c)
             case _:
                 raise ValueError(f"Invalid character: {c}")
