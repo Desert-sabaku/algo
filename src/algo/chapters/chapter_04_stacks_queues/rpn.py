@@ -1,5 +1,4 @@
-def main():
-    expression = "(3+3)^2*2"
+def convert_postfix(expression: str) -> list[str]:
     postfix: list[str] = []
     stack: list[str] = []
 
@@ -32,4 +31,4 @@ def main():
 
 
 if __name__ == "__main__":
-    print(main())
+    print(convert_postfix("3+4*2/(1-5)^2^3"))
