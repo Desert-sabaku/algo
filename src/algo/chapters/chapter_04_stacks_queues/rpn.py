@@ -1,4 +1,7 @@
+"""Utilities for converting infix expressions to postfix notation."""
+
 def convert_postfix(expression: str) -> list[str]:
+    """Convert an infix expression into postfix tokens."""
     postfix: list[str] = []
     stack: list[str] = []
 
